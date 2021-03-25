@@ -1,0 +1,34 @@
+# NetBeans specific #
+nbproject/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+build.xml
+bin/
+
+# eclipse project file
+.settings/
+.classpath
+.project
+
+# Class Files #
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+#OS
+.DS_Store
+
+# Maven
+log/
+target/
+
+#VScode & VSStudio
+.vscode/
+.vs/
