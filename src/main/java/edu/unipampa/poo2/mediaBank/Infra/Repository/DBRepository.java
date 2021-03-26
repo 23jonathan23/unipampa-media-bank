@@ -13,7 +13,7 @@ import java.nio.file.*;
 import edu.unipampa.poo2.mediaBank.Domain.Media;
 import edu.unipampa.poo2.mediaBank.Infra.Interface.IDBRepository;
 
-public class DBRepository implements IDBRepository{
+public class DBRepository implements IDBRepository {
     private final String CONFIG_FILE = "config.properties";
     private final int INDEX_DIFF = 1;
     private Path pathDB;
@@ -24,16 +24,17 @@ public class DBRepository implements IDBRepository{
 
     public DBRepository() throws IOException {
         var props = getConfig();
-        pathDB = Paths.get((System.getProperty("user.dir") + props.getProperty("db.path") + props.getProperty("db.name")));
+        pathDB = Paths
+                .get((System.getProperty("user.dir") + props.getProperty("db.path") + props.getProperty("db.name")));
     }
 
     public void insert(Media media) throws IOException, ClassNotFoundException {
         List<Media> listMedia = new ArrayList();
 
-        if(Files.exists(pathDB)) { 
+        if (Files.exists(pathDB)) {
             openFileRead(pathDB.toString());
-			
-		    listMedia = (List<Media>) objectInputStream.readObject();
+
+            listMedia = (List<Media>) objectInputStream.readObject();
 
             disposeFileRead();
         }
@@ -48,7 +49,7 @@ public class DBRepository implements IDBRepository{
         media.setPathFile(pathDB.toString());
 
         listMedia.add(media);
-        
+
         objectOutStream.writeObject(listMedia);
 
         disposeFileWrite();
@@ -56,34 +57,34 @@ public class DBRepository implements IDBRepository{
 
     public List<Media> queryList(List<Integer> ids) throws IOException, ClassNotFoundException {
         openFileRead(pathDB.toString());
-			
-		var listMedia = (List<Media>) objectInputStream.readObject();
+
+        var listMedia = (List<Media>) objectInputStream.readObject();
 
         disposeFileRead();
 
         List<Media> result = new ArrayList();
 
-        for(var media : listMedia) {
-           for(var id : ids) {
-               if(media.getId() == id) {
-                result.add(media);
-               }
-           }
+        for (var media : listMedia) {
+            for (var id : ids) {
+                if (media.getId() == id) {
+                    result.add(media);
+                }
+            }
         }
 
         return result;
     }
 
     public Media query(int id) throws ClassNotFoundException, IOException {
-		var listMedia = queryAll();
+        var listMedia = queryAll();
 
         return listMedia.get(id - INDEX_DIFF);
     }
 
     public List<Media> queryAll() throws IOException, ClassNotFoundException {
         openFileRead(pathDB.toString());
-			
-		var listMedia = (List<Media>) objectInputStream.readObject();
+
+        var listMedia = (List<Media>) objectInputStream.readObject();
 
         disposeFileRead();
 
@@ -91,10 +92,10 @@ public class DBRepository implements IDBRepository{
     }
 
     public void update(Media media) throws IOException, ClassNotFoundException {
-		var listMedia = queryAll();
+        var listMedia = queryAll();
 
-        for(var mediaOld : listMedia) {
-            if(mediaOld.getId() == media.getId()) {
+        for (var mediaOld : listMedia) {
+            if (mediaOld.getId() == media.getId()) {
                 listMedia.set(listMedia.indexOf(mediaOld), media);
                 break;
             }
@@ -110,8 +111,8 @@ public class DBRepository implements IDBRepository{
     public void delete(int id) throws IOException, ClassNotFoundException {
         var listMedia = queryAll();
 
-        for(var media : listMedia) {
-            if(media.getId() == id) {
+        for (var media : listMedia) {
+            if (media.getId() == id) {
                 listMedia.remove(listMedia.indexOf(media));
                 break;
             }
@@ -145,10 +146,10 @@ public class DBRepository implements IDBRepository{
     }
 
     private Properties getConfig() throws IOException {
-		Properties props = new Properties();
+        Properties props = new Properties();
 
         props.load(new FileInputStream(CONFIG_FILE));
-        
+
         return props;
-	}
+    }
 }
