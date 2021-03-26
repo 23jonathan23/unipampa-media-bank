@@ -3,16 +3,16 @@ package edu.unipampa.poo2.mediaBank.Domain;
 import java.util.List;
 import java.util.Calendar;
 
-public class Photo extends Media{
+public class Photo extends Media {
     private String Photographer;
     private List<String> People;
     private String Place;
     private Calendar Date;
     
-    public Photo(String pathFile, String title, String description,
+    public Photo(String title, String description,
          String photographer, List<String> people, String place, Calendar date) {
 
-            super(pathFile, title, description);
+            super(title, description);
 
             Photographer = photographer;
             People = people;
