@@ -1,25 +1,27 @@
 package edu.unipampa.poo2.mediaBank.Domain;
 
 import java.util.List;
+import java.util.ArrayList;
+import java.time.LocalTime;
 
 public class Song extends Media{
     String genre;
     String language;
-    List<String> authors;
-    List<String> interpreters;
-    int[] duration = new int[3];
-    int ano;
+    List<String> authors = new ArrayList<>();
+    List<String> interpreters = new ArrayList<>();
+    LocalTime duration;
+    int year;
 
     public Song(String title, String description, String genre, 
-                String language, List<String> authors, List<String> interpreters, int[] duration, int ano){
+                String language, List<String> authors, List<String> interpreters, LocalTime duration, int year){
         super(title, description);
         
         this.genre = genre;
         this.language = language;
         this.authors.addAll(authors);
         this.interpreters.addAll(interpreters);
-        setDuration(duration);
-        this.ano = ano;
+        this.duration = duration;
+        this.year = year;
     }
 
     public void setGenre(String genre){
@@ -123,37 +125,35 @@ public class Song extends Media{
         return false;
     }
 
-    public void setDuration(int[] duration){
-        for (int i = 0; i < duration.length; i++){
-            this.duration[i] = duration[i];
-        }
+    public void setDuration(LocalTime duration){
+        this.duration = duration;
     }
-    public int[] getDuration(){
+    public LocalTime getDuration(){
         return duration;
     }
     public void setHour(int hour){
-        this.duration[0] = hour;
+        this.duration = LocalTime.of(hour, duration.getMinute(), duration.getSecond());
     }
     public int getHour(){
-        return this.duration[0];
+        return duration.getHour();
     }
     public void setMinute(int minute){
-        this.duration[1] = minute;
+        this.duration = LocalTime.of(duration.getHour(), minute, duration.getSecond());
     }
     public int getMinute(){
-        return this.duration[1];
+        return duration.getMinute();
     }
     public void setSecond(int second){
-        this.duration[2] = second;
+        this.duration = LocalTime.of(duration.getHour(), duration.getMinute(), second);
     }
     public int getSecond(){
-        return this.duration[2];
+        return duration.getSecond();
     }
-    public void setAno(int ano){
-        this.ano = ano;
+    public void setYear(int year){
+        this.year = year;
     }
-    public int getAno(){
-        return ano;
+    public int getYear(){
+        return year;
     }
     
 }
