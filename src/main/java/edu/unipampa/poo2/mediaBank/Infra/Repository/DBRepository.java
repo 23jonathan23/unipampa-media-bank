@@ -16,49 +16,49 @@ import edu.unipampa.poo2.mediaBank.Infra.Interface.IDBRepository;
 public class DBRepository implements IDBRepository {
     private final String CONFIG_FILE = "config.properties";
     private final int INDEX_DIFF = 1;
-    private Path pathDB;
-    private FileOutputStream fileOutStream;
-    private ObjectOutputStream objectOutStream;
-    private FileInputStream fileInputStream;
-    private ObjectInputStream objectInputStream;
+    private Path _pathDB;
+    private FileOutputStream _fileOutStream;
+    private ObjectOutputStream _objectOutStream;
+    private FileInputStream _fileInputStream;
+    private ObjectInputStream _objectInputStream;
 
     public DBRepository() throws IOException {
         var props = getConfig();
-        pathDB = Paths
+        _pathDB = Paths
                 .get((System.getProperty("user.dir") + props.getProperty("db.path") + props.getProperty("db.name")));
     }
 
     public void insert(Media media) throws IOException, ClassNotFoundException {
         List<Media> listMedia = new ArrayList();
 
-        if (Files.exists(pathDB)) {
-            openFileRead(pathDB.toString());
+        if (Files.exists(_pathDB)) {
+            openFileRead(_pathDB.toString());
 
-            listMedia = (List<Media>) objectInputStream.readObject();
+            listMedia = (List<Media>) _objectInputStream.readObject();
 
             disposeFileRead();
         }
 
-        openFileWrite(pathDB.toString());
+        openFileWrite(_pathDB.toString());
 
         var lastId = listMedia.size() == 0 
             ? listMedia.size() 
             : listMedia.get(listMedia.size() - INDEX_DIFF).getId();
 
         media.setId(lastId + INDEX_DIFF);
-        media.setPathFile(pathDB.toString());
+        media.setPathFile(_pathDB.toString());
 
         listMedia.add(media);
 
-        objectOutStream.writeObject(listMedia);
+        _objectOutStream.writeObject(listMedia);
 
         disposeFileWrite();
     }
 
     public List<Media> queryList(List<Integer> ids) throws IOException, ClassNotFoundException {
-        openFileRead(pathDB.toString());
+        openFileRead(_pathDB.toString());
 
-        var listMedia = (List<Media>) objectInputStream.readObject();
+        var listMedia = (List<Media>) _objectInputStream.readObject();
 
         disposeFileRead();
 
@@ -82,9 +82,9 @@ public class DBRepository implements IDBRepository {
     }
 
     public List<Media> queryAll() throws IOException, ClassNotFoundException {
-        openFileRead(pathDB.toString());
+        openFileRead(_pathDB.toString());
 
-        var listMedia = (List<Media>) objectInputStream.readObject();
+        var listMedia = (List<Media>) _objectInputStream.readObject();
 
         disposeFileRead();
 
@@ -101,9 +101,9 @@ public class DBRepository implements IDBRepository {
             }
         }
 
-        openFileWrite(pathDB.toString());
+        openFileWrite(_pathDB.toString());
 
-        objectOutStream.writeObject(listMedia);
+        _objectOutStream.writeObject(listMedia);
 
         disposeFileWrite();
     }
@@ -118,31 +118,31 @@ public class DBRepository implements IDBRepository {
             }
         }
 
-        openFileWrite(pathDB.toString());
+        openFileWrite(_pathDB.toString());
 
-        objectOutStream.writeObject(listMedia);
+        _objectOutStream.writeObject(listMedia);
 
         disposeFileWrite();
     }
 
     private void openFileWrite(String file) throws IOException {
-        fileOutStream = new FileOutputStream(file);
-        objectOutStream = new ObjectOutputStream(fileOutStream);
+        _fileOutStream = new FileOutputStream(file);
+        _objectOutStream = new ObjectOutputStream(_fileOutStream);
     }
 
     private void disposeFileWrite() throws IOException {
-        fileOutStream.close();
-        objectOutStream.close();
+        _fileOutStream.close();
+        _objectOutStream.close();
     }
 
     private void openFileRead(String file) throws IOException {
-        fileInputStream = new FileInputStream(file);
-        objectInputStream = new ObjectInputStream(fileInputStream);
+        _fileInputStream = new FileInputStream(file);
+        _objectInputStream = new ObjectInputStream(_fileInputStream);
     }
 
     private void disposeFileRead() throws IOException {
-        fileInputStream.close();
-        objectInputStream.close();
+        _fileInputStream.close();
+        _objectInputStream.close();
     }
 
     private Properties getConfig() throws IOException {
