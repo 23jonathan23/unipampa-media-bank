@@ -25,6 +25,8 @@ public class DBRepository implements IDBRepository {
     private ObjectOutputStream _objectOutStream;
     private FileInputStream _fileInputStream;
     private ObjectInputStream _objectInputStream;
+    private List<Media> _cache;
+    private boolean _updateCache = true;
 
     public DBRepository() throws IOException {
         var props = getConfig();
@@ -56,6 +58,8 @@ public class DBRepository implements IDBRepository {
         _objectOutStream.writeObject(listMedia);
 
         disposeFileWrite();
+        
+        _updateCache = true;
     }
 
     public List<Media> queryList(FilterMedia filter) throws IOException, ClassNotFoundException {
@@ -128,13 +132,19 @@ public class DBRepository implements IDBRepository {
     }
 
     private List<Media> queryAll() throws IOException, ClassNotFoundException {
-        openFileRead(_pathDB.toString());
+        if(_updateCache) {
+            openFileRead(_pathDB.toString());
+    
+            var listMedia = (List<Media>) _objectInputStream.readObject();
+    
+            disposeFileRead();
 
-        var listMedia = (List<Media>) _objectInputStream.readObject();
+            _updateCache = false;
+    
+            return listMedia;
+        }
 
-        disposeFileRead();
-
-        return listMedia;
+        return _cache;
     }
 
     private void openFileWrite(String file) throws IOException {
