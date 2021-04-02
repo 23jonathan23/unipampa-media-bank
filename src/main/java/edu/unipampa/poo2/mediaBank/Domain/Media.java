@@ -3,45 +3,46 @@ package edu.unipampa.poo2.mediaBank.Domain;
 import java.io.Serializable;
 
 public abstract class Media implements Serializable{
-    protected int Id;
-    protected String PathFile;
-    protected String Title;
-    protected String Description;
+    private int _id;
+    private String _pathFile;
+    private String _title;
+    private String _description;
 
-    protected Media(String title, String description) {
-        Title = title;
-        Description = description;
+    protected Media(String title, String description, String pathFile) {
+        _title = title;
+        _description = description;
+        _pathFile = pathFile;
     }
 
     public int getId() {
-        return Id;
+        return _id;
     }
 
     public void setId(int id) {
-        Id = id;
+        _id = id;
     }
 
     public String getPathFile() {
-        return PathFile;
+        return _pathFile;
     }
 
     public void setPathFile(String pathFile) {
-        PathFile = pathFile;
+        _pathFile = pathFile;
     }
 
     public String getTitle() {
-        return Title;
+        return _title;
     }
 
     public void setTitle(String title) {
-        Title = title;
+        _title = title;
     }
 
     public String getDescription() {
-        return Description;
+        return _description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        _description = description;
     }
 }

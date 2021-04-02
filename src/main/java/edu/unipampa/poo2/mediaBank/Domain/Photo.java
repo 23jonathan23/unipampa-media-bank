@@ -4,51 +4,51 @@ import java.util.List;
 import java.util.Calendar;
 
 public class Photo extends Media {
-    private String Photographer;
-    private List<String> People;
-    private String Place;
-    private Calendar Date;
+    private String _photographer;
+    private List<String> _people;
+    private String _place;
+    private Calendar _date;
     
     public Photo(String title, String description,
-         String photographer, List<String> people, String place, Calendar date) {
+         String photographer, List<String> people, String place, Calendar date, String pathFile) {
 
-            super(title, description);
+        super(title, description, pathFile);
 
-            Photographer = photographer;
-            People = people;
-            Place = place;
-            Date = date;
+        _photographer = photographer;
+        _people = people;
+        _place = place;
+        _date = date;
     }
 
     public String getPhotographer() {
-        return Photographer;
+        return _photographer;
     }
 
     public void setPhotographer(String photographer) {
-        Photographer = photographer;
+        _photographer = photographer;
     }
 
     public List<String> getPeople() {
-        return  People;
+        return  _people;
     }
 
     public void setPeople(List<String> people) {
-        People = people;
+        _people = people;
     }
 
     public String getPlace() {
-        return Place;
+        return _place;
     }
 
     public void setPlace(String place) {
-        Place = place;
+        _place = place;
     }
 
     public Calendar getDate() {
-        return Date;
+        return _date;
     }
 
     public void setDate(Calendar date) {
-        Date = date;
+        _date = date;
     }
 }
