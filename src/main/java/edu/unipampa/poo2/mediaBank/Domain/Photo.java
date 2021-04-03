@@ -8,9 +8,10 @@ public class Photo extends Media {
     private List<String> _people;
     private String _place;
     private Calendar _date;
+    private static final long serialVersionUID = -1271934389395100274L;
     
-    public Photo(String title, String description,
-         String photographer, List<String> people, String place, Calendar date, String pathFile) {
+    public Photo(String title, String description, String photographer, 
+        List<String> people, String place, Calendar date, String pathFile) {
 
         super(title, description, pathFile);
 
