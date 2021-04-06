@@ -17,6 +17,7 @@ import edu.unipampa.poo2.mediaBank.Domain.Media;
 import edu.unipampa.poo2.mediaBank.Domain.MediaPlayer;
 import edu.unipampa.poo2.mediaBank.Infra.Interface.IDBRepository;
 
+@SuppressWarnings("unchecked")
 public class DBRepository implements IDBRepository {
     private final String CONFIG_FILE = "config.properties";
     private final int INDEX_DIFF = 1;
@@ -30,12 +31,16 @@ public class DBRepository implements IDBRepository {
 
     public DBRepository() throws IOException {
         var props = getConfig();
-        _pathDB = Paths
-                .get((System.getProperty("user.dir") + props.getProperty("db.path") + props.getProperty("db.name")));
+
+        _pathDB = Paths.get(
+            (System.getProperty("user.dir") + 
+            props.getProperty("db.path") + 
+            props.getProperty("db.name"))
+        );
     }
 
     public void insert(Media media) throws IOException, ClassNotFoundException {
-        List<Media> listMedia = new ArrayList();
+        List<Media> listMedia = new ArrayList<>();
 
         if (Files.exists(_pathDB)) {
             openFileRead(_pathDB.toString());
@@ -78,10 +83,10 @@ public class DBRepository implements IDBRepository {
 
         
         Predicate<Media> predicate = media -> {
-            if(media instanceof MediaPlayer) {
+            if (media instanceof MediaPlayer) {
                 var mediaPlayer = (MediaPlayer) media;
                 
-                if(!title.isEmpty() && !genre.isEmpty()){
+                if (!title.isEmpty() && !genre.isEmpty()) {
                     return mediaPlayer.getGenre().equals(genre) && mediaPlayer.getTitle().equals(title);
                 } else {
                     return mediaPlayer.getGenre().equals(genre) || mediaPlayer.getTitle().equals(title);
@@ -132,7 +137,7 @@ public class DBRepository implements IDBRepository {
     }
 
     private List<Media> queryAll() throws IOException, ClassNotFoundException {
-        if(_updateCache) {
+        if (_updateCache) {
             openFileRead(_pathDB.toString());
     
             var listMedia = (List<Media>) _objectInputStream.readObject();
