@@ -42,14 +42,14 @@ public class MediaHandler {
         return filteredMedia;
     }
 
-    public List<Movie> getMovieByTitle(FilterMedia filter) throws IOException, ClassNotFoundException {
+    public List<Movie> getMoviesByTitle(FilterMedia filter) throws IOException, ClassNotFoundException {
         List<Movie> filteredMedia = FilterMediaListByType.extractMovieList(repository.queryList(filter));
 
         filteredMedia.sort((m1, m2) -> m1.getTitle().compareTo(m2.getTitle()) < 0 ? 1 : 0);
         return filteredMedia;
     }
 
-    public List<Song> getSongByTitle(FilterMedia filter) throws IOException, ClassNotFoundException {
+    public List<Song> getSongsByTitle(FilterMedia filter) throws IOException, ClassNotFoundException {
         List<Song> filteredMedia = FilterMediaListByType.extractSongList(repository.queryList(filter));
 
         filteredMedia.sort((s1, s2) -> s1.getTitle().compareTo(s2.getTitle()) < 0 ? 1 : 0);
