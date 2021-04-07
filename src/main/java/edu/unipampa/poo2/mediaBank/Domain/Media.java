@@ -2,11 +2,12 @@ package edu.unipampa.poo2.mediaBank.Domain;
 
 import java.io.Serializable;
 
-public abstract class Media implements Serializable{
+public abstract class Media implements Serializable {
     private int _id;
     private String _pathFile;
     private String _title;
     private String _description;
+    private static final long serialVersionUID = 2247710441387437004L;
 
     protected Media(String title, String description, String pathFile) {
         _title = title;
