@@ -2,15 +2,14 @@ package edu.unipampa.poo2.mediaBank.Business.utils;
 
 import java.util.List;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import edu.unipampa.poo2.mediaBank.Infra.Repository.DBRepository;
 import edu.unipampa.poo2.mediaBank.Domain.*;
 
-public class MediaHandler {
+public class MediaSorter {
     private DBRepository repository;
 
-    public MediaHandler(DBRepository repository) {
+    public MediaSorter(DBRepository repository) {
         this.repository = repository;
     }
 
