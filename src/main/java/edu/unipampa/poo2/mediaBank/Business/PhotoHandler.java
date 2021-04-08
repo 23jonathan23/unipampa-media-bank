@@ -11,10 +11,6 @@ import java.util.List;
 public class PhotoHandler extends MediaHandler {
     
     private List<Photo> photos;
-    private DBRepository repository;
-    private MediaSorter mediaSorter;
-    private FilterMedia filter;
-    private boolean sortType = false; //true is Title, false is Date
 
     public PhotoHandler(DBRepository repository, MediaSorter mediaSorter){
         this.repository = repository;
@@ -22,21 +18,6 @@ public class PhotoHandler extends MediaHandler {
         filter = new FilterMedia();
     }
 
-    public void sortByTitle(boolean type) {
-        sortType = type;
-    }
-
-    public boolean deleteMedia(int id){
-        try {
-            repository.delete(id);
-        } catch (ClassNotFoundException cnf) {
-            return false;
-        } catch (IOException ioe) {
-            return false;
-        }
-
-        return query(filter.getTitle(), filter.getGenre());
-    }
     public boolean query(String title, String genre){
         filter.setTitle(title);
         filter.setGenre(genre);
@@ -54,7 +35,8 @@ public class PhotoHandler extends MediaHandler {
         }
         return true;
     }
-    public List<Photo> getPhoto(){
+    
+    public List<Photo> getPhotos(){
         return photos;
     }
     public boolean edit(Photo photo) {
