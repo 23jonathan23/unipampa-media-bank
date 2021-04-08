@@ -1,16 +1,26 @@
 package edu.unipampa.poo2.mediaBank.Business;
 
 import edu.unipampa.poo2.mediaBank.Domain.FilterMedia;
+import edu.unipampa.poo2.mediaBank.Domain.Media;
 import edu.unipampa.poo2.mediaBank.Infra.Repository.DBRepository;
-import edu.unipampa.poo2.mediaBank.Business.utils.MediaSorter;
+
+import java.io.IOException;
 
 public abstract class MediaHandler {
     protected DBRepository repository;
-    protected MediaSorter mediaSorter;
-    protected FilterMedia filter;
-    protected boolean sortType = false;
+    protected static FilterMedia filter = new FilterMedia();
 
-    public abstract void sortByTitle(boolean type);
-    public abstract boolean deleteMedia(int id);
-    public abstract boolean query(String title, String genre);
+    public MediaHandler(DBRepository repository) {
+        this.repository = repository;
+    }
+    
+    public void deleteMedia(int id) throws ClassNotFoundException, IOException {
+        repository.delete(id);
+    }
+    public void createMedia(Media media) throws ClassNotFoundException, IOException {
+        repository.insert(media);
+    }
+    public void updateMedia(Media media) throws ClassNotFoundException, IOException {
+        repository.update(media);
+    }
 }

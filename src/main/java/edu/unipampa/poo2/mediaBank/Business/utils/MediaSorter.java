@@ -13,11 +13,15 @@ public class MediaSorter {
         this.repository = repository;
     }
 
-    public List<Photo> getPhotosByDate(FilterMedia filter) throws IOException, ClassNotFoundException {
-        List<Photo> filteredMedia = FilterMediaListByType.extractPhotoList(repository.queryList(filter));
+    public List<Photo> getPhotosByDate(FilterMedia filter) {
+        try {
+            List<Photo> filteredMedia = FilterMediaListByType.extractPhotoList(repository.queryList(filter));
 
-        filteredMedia.sort((p1, p2) -> p1.getDate().getTimeInMillis() > p2.getDate().getTimeInMillis() ? 1 : 0);
-        return filteredMedia;
+            filteredMedia.sort((p1, p2) -> p1.getDate().getTimeInMillis() > p2.getDate().getTimeInMillis() ? 1 : 0);
+            return filteredMedia;
+        }catch(Exception ex) {
+            return null;
+        }
     }
 
     public List<Movie> getMoviesByDate(FilterMedia filter) throws IOException, ClassNotFoundException {
