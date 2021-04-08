@@ -32,9 +32,7 @@
             </plugin>
         </plugins>
     </build>
-
     <dependencies>
-
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
@@ -45,6 +43,14 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>15.0.1</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>xuggle</groupId>
+            <artifactId>xuggle-xuggler</artifactId>
+            <version>5.4</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/xuggle-xuggler-5.4.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

@@ -32,3 +32,6 @@ target/
 #VScode & VSStudio
 .vscode/
 .vs/
+
+#external libs
+!libs/*.jar
