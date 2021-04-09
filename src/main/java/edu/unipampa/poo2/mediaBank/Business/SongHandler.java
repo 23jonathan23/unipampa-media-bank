@@ -1,11 +1,12 @@
 package edu.unipampa.poo2.mediaBank.Business;
 
 import edu.unipampa.poo2.mediaBank.Domain.Song;
-import edu.unipampa.poo2.mediaBank.Domain.FilterMedia;
 import edu.unipampa.poo2.mediaBank.Infra.Repository.DBRepository;
 import edu.unipampa.poo2.mediaBank.Business.utils.MediaSorter;
 
+import java.io.File;
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.List;
 
 public class SongHandler extends MediaHandler {
@@ -13,9 +14,24 @@ public class SongHandler extends MediaHandler {
     List<Song> songs;
 
     public SongHandler(DBRepository repository, MediaSorter mediaSorter) {
-        this.repository = repository;
-        this.mediaSorter = mediaSorter;
-        filter = new FilterMedia();
+        super(repository, mediaSorter);
+    }
+
+    public boolean deleteMedia(int id) {
+        Song song = getMedia(id);
+
+        if (song == null) {
+            return false;
+        }
+
+        File file = new File(song.getPathFile());
+        file.delete();
+
+        if (!removeFromSystem(id)) {
+            return false;
+        }
+
+        return query(filter.getTitle(), filter.getGenre());
     }
 
     public boolean query(String title, String genre){
@@ -52,7 +68,19 @@ public class SongHandler extends MediaHandler {
         return query(filter.getTitle(), filter.getGenre());
     }
 
-    public boolean addSong(Song song){
+    public boolean addSong(File file, String title, String description, String genre, String language,
+        List<String> authors, List<String> interpreters, LocalTime duration, int year){
+
+        Song song = new Song(title, description, genre, language, authors, interpreters, duration, year, file.toPath().toString());
+
+        try {
+            song.setId(repository.getNewId());
+        } catch (ClassNotFoundException cnf) {
+            return false;
+        } catch (IOException ioe) {
+            return false;
+        }
+
         try{
             repository.insert(song);
         } catch(IOException ioe) {
@@ -62,5 +90,14 @@ public class SongHandler extends MediaHandler {
         }
 
         return query(filter.getTitle(), filter.getGenre());
+    }
+
+    private Song getMedia(int id) {
+        for (Song p : songs) {
+            if (p.getId() == id) {
+                return p;
+            }
+        }
+        return null;
     }
 }

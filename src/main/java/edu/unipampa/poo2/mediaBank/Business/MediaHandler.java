@@ -10,13 +10,19 @@ import edu.unipampa.poo2.mediaBank.Business.utils.MediaSorter;
 public abstract class MediaHandler {
     protected DBRepository repository;
     protected MediaSorter mediaSorter;
-    protected FilterMedia filter;
+    protected static FilterMedia filter = new FilterMedia();
     protected boolean sortType = false;
+
+    public MediaHandler(DBRepository repository, MediaSorter mediaSorter) {
+        this.repository = repository;
+        this.mediaSorter = mediaSorter;
+    }
 
     public void sortByTitle(boolean type) {
         sortType = type;
     }
-    public boolean deleteMedia(int id) {
+
+    public boolean removeFromSystem(int id) {
         try {
             repository.delete(id);
         } catch (ClassNotFoundException cnf) {
@@ -24,9 +30,9 @@ public abstract class MediaHandler {
         } catch (IOException ioe) {
             return false;
         }
-
-        return query(filter.getTitle(), filter.getGenre());
+        return true;
     }
     
+    public abstract boolean deleteMedia(int id);
     public abstract boolean query(String title, String genre);
 }
