@@ -1,103 +1,30 @@
 package edu.unipampa.poo2.mediaBank.Business;
 
 import edu.unipampa.poo2.mediaBank.Domain.Song;
+import edu.unipampa.poo2.mediaBank.Domain.SortType;
 import edu.unipampa.poo2.mediaBank.Infra.Repository.DBRepository;
-import edu.unipampa.poo2.mediaBank.Business.utils.MediaSorter;
+import edu.unipampa.poo2.mediaBank.Business.utils.FilterMediaListByType;
 
-import java.io.File;
 import java.io.IOException;
-import java.time.LocalTime;
 import java.util.List;
 
 public class SongHandler extends MediaHandler {
-    
-    List<Song> songs;
 
-    public SongHandler(DBRepository repository, MediaSorter mediaSorter) {
-        super(repository, mediaSorter);
+    public SongHandler(DBRepository repository){
+        super(repository);
     }
 
-    public boolean deleteMedia(int id) {
-        Song song = getMedia(id);
-
-        if (song == null) {
-            return false;
-        }
-
-        File file = new File(song.getPathFile());
-        file.delete();
-
-        if (!removeFromSystem(id)) {
-            return false;
-        }
-
-        return query(filter.getTitle(), filter.getGenre());
-    }
-
-    public boolean query(String title, String genre){
+    public List<Song> getSong(String title, String genre, SortType sortType) throws ClassNotFoundException, IOException{
         filter.setTitle(title);
         filter.setGenre(genre);
-
-        try{
-            if (sortType) {
-                songs = mediaSorter.getSongsByTitle(filter);
-            } else {
-                songs = mediaSorter.getSongsByDate(filter);
-            }
-        } catch (ClassNotFoundException cnf) {
-            return false;
-        } catch (IOException ioe) {
-            return false;
-        }
-        return true;
-    }
-
-    public List<Song> getSongs() {
-        return songs;
-    }
-
-    public boolean edit(Song song) {
-        try {
-            repository.update(song);
-        } catch (ClassNotFoundException cnf) {
-            return false;
-        } catch (IOException ioe) {
-            return false;
+        var songList = FilterMediaListByType.extractSongList(repository.queryList(filter));
+        
+        if(sortType == SortType.TITLE) {
+           songList.sort((p1, p2) -> p1.getTitle().compareTo(p2.getTitle()) < 0 ? 1 : 0);
+        } else {
+            songList.sort((p1, p2) -> p1.getYear() > p2.getYear() ? 1 : 0);
         }
 
-        return query(filter.getTitle(), filter.getGenre());
-    }
-
-    public boolean addSong(File file, String title, String description, String genre, String language,
-        List<String> authors, List<String> interpreters, LocalTime duration, int year){
-
-        Song song = new Song(title, description, genre, language, authors, interpreters, duration, year, file.toPath().toString());
-
-        try {
-            song.setId(repository.getNewId());
-        } catch (ClassNotFoundException cnf) {
-            return false;
-        } catch (IOException ioe) {
-            return false;
-        }
-
-        try{
-            repository.insert(song);
-        } catch(IOException ioe) {
-            return false;
-        } catch(ClassNotFoundException cnf) {
-            return false;
-        }
-
-        return query(filter.getTitle(), filter.getGenre());
-    }
-
-    private Song getMedia(int id) {
-        for (Song p : songs) {
-            if (p.getId() == id) {
-                return p;
-            }
-        }
-        return null;
+        return songList;
     }
 }
