@@ -136,22 +136,6 @@ public class DBRepository implements IDBRepository {
         disposeFileWrite();
     }
 
-    public int getNewId() throws IOException, ClassNotFoundException{
-        List<Media> medias = queryAll();
-
-        int biggest = 0;
-        for (Media m : medias) {
-            if (m.getId() > biggest) {
-                biggest = m.getId();
-            }
-        }
-        return biggest + 1;
-    }
-
-    public List<Media> getAll() throws IOException, ClassNotFoundException {
-        return queryAll();
-    }
-
     private List<Media> queryAll() throws IOException, ClassNotFoundException {
         if (_updateCache) {
             openFileRead(_pathDB.toString());
