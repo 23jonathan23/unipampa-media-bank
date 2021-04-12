@@ -59,7 +59,7 @@ public class DBRepository implements IDBRepository {
             }
         }
 
-        media.setId(lastId + INDEX_DIFF);
+        media.setId(lastId + INDEX_DIFF); 
 
         listMedia.add(media);
 
