@@ -18,12 +18,16 @@ public class Song extends MediaPlayer {
         _interpreters = interpreters;
     }
 
+
     public void setAuthors(List<String> authors) {
+
+    public void setAuthors(List<String> authors){
         _authors = authors;
     }
 
     public List<String> getAuthors() {
         return _authors;
+
     }
 
     public void setInterpreters(List<String> interpreters) {
@@ -33,4 +37,14 @@ public class Song extends MediaPlayer {
     public List<String> getInterpreters() {
         return _interpreters;
     }
+
+    }
+
+    public void setInterpreters(List<String> interpreters) {
+        _interpreters = interpreters;
+    }
+
+    public List<String> getInterpreters() {
+        return _interpreters;
+    } 
 }
