@@ -52,12 +52,9 @@ public class DBRepository implements IDBRepository {
 
         openFileWrite(_pathDB.toString());
 
-        int lastId = 0;
-        for (Media m : listMedia) {
-            if (m.getId() > lastId) {
-                lastId = m.getId();
-            }
-        }
+        var lastId = listMedia.size() == 0 
+            ? listMedia.size() 
+            : listMedia.get(listMedia.size() - INDEX_DIFF).getId();
 
         media.setId(lastId + INDEX_DIFF); 
 
