@@ -46,11 +46,9 @@
         </dependency>
         
         <dependency>
-            <groupId>xuggle</groupId>
-            <artifactId>xuggle-xuggler</artifactId>
-            <version>5.4</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/xuggle-xuggler-5.4.jar</systemPath>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>17-ea+5</version>
         </dependency>
     </dependencies>
 </project>
