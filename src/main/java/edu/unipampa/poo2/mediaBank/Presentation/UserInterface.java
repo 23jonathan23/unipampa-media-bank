@@ -11,7 +11,11 @@ public class UserInterface extends Application {
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("UserInterface.fxml"));
         Parent root = loader.load();
-        stage.setScene(new Scene(root));
+
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+
+        stage.setScene(scene);
         stage.show();
     }
 
