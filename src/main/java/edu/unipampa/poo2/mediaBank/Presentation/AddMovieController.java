@@ -5,7 +5,6 @@
  */
 package edu.unipampa.poo2.mediaBank.Presentation;
 
-import java.time.LocalTime;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -15,8 +14,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -87,7 +84,7 @@ public class AddMovieController implements Initializable {
             System.out.println(resultado);
             m = new Media(resultado);
         } catch (Exception e){
-            System.out.println("deu errado");
+            System.out.println("Algo deu errado :(");
             return;
         };
         long timeDuration =(long) m.getDuration().toSeconds();
@@ -101,8 +98,6 @@ public class AddMovieController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
         setDuration();
     }    
-    
 }
