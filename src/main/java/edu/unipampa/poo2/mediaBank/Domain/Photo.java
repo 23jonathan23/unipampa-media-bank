@@ -3,7 +3,7 @@ package edu.unipampa.poo2.mediaBank.Domain;
 import java.util.List;
 import java.util.Calendar;
 
-public class Photo extends Media {
+public class Photo extends MediaDomain {
     private String _photographer;
     private List<String> _people;
     private String _place;

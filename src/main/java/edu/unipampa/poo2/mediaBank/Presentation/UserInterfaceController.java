@@ -22,19 +22,31 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class UserInterfaceController implements Initializable {
+    
+    @FXML
     private Button addNewMediaButton;
+    
+    @FXML
     private ChoiceBox<String> orderDropdown;
+    
+    @FXML
     private ChoiceBox<String> filterDropdown;
 
     FileChooser fileChooser = new FileChooser();
 
     private void loadDropdownData() {
-        orderDropdown.getItems().add("A-Z");
+        if (orderDropdown != null) {
+            orderDropdown.getItems().add("A-Z");
         orderDropdown.getItems().add("Mais recentes");
         orderDropdown.getItems().add("Mais antigos");
         orderDropdown.getSelectionModel().select(0);
+        
+        }
+        
+        if (filterDropdown != null) {
+            filterDropdown.getItems().add("Gênero");
+        }
 
-        filterDropdown.getItems().add("Gênero");
     }
 
     @FXML
@@ -49,11 +61,11 @@ public class UserInterfaceController implements Initializable {
         } catch (IOException ioe) {};
         String[] typeSpliter = fileType.split("/");
         String type = typeSpliter[0];
+        System.out.println(file.getAbsolutePath());
         
         switch (type) {
             case "video":
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("AddMovie.fxml"));
-                loader.setController("edu.unipampa.poo2.mediaBank.Presentation.AddMovieController");
                 
                 Parent root = null;
                 try {
@@ -64,7 +76,7 @@ public class UserInterfaceController implements Initializable {
                 Stage stage2 = new Stage();
                 stage2.setScene(new Scene(root));
                 stage2.show();
-                addM.myFunction(file.getAbsolutePath().toString());
+                addM.setPath(file.getAbsolutePath());
                 
                 break;
 

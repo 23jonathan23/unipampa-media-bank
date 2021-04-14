@@ -3,7 +3,7 @@ package edu.unipampa.poo2.mediaBank.Domain;
 import java.util.List;
 import java.time.LocalTime;
 
-public class Song extends MediaPlayer {
+public class Song extends MediaPlayerDomain {
     private List<String> _authors;
     private List<String> _interpreters;
     private static final long serialVersionUID = 7884718496500956708L;

@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 import java.nio.file.*;
 
 import edu.unipampa.poo2.mediaBank.Domain.FilterMedia;
-import edu.unipampa.poo2.mediaBank.Domain.Media;
-import edu.unipampa.poo2.mediaBank.Domain.MediaPlayer;
+import edu.unipampa.poo2.mediaBank.Domain.MediaDomain;
+import edu.unipampa.poo2.mediaBank.Domain.MediaPlayerDomain;
 import edu.unipampa.poo2.mediaBank.Infra.Interface.IDBRepository;
 
 @SuppressWarnings("unchecked")
@@ -26,7 +26,7 @@ public class DBRepository implements IDBRepository {
     private ObjectOutputStream _objectOutStream;
     private FileInputStream _fileInputStream;
     private ObjectInputStream _objectInputStream;
-    private List<Media> _cache;
+    private List<MediaDomain> _cache;
     private boolean _updateCache = true;
 
     public DBRepository() throws IOException {
@@ -39,13 +39,13 @@ public class DBRepository implements IDBRepository {
         );
     }
 
-    public void insert(Media media) throws IOException, ClassNotFoundException {
-        List<Media> listMedia = new ArrayList<>();
+    public void insert(MediaDomain media) throws IOException, ClassNotFoundException {
+        List<MediaDomain> listMedia = new ArrayList<>();
 
         if (Files.exists(_pathDB)) {
             openFileRead(_pathDB.toString());
 
-            listMedia = (List<Media>) _objectInputStream.readObject();
+            listMedia = (List<MediaDomain>) _objectInputStream.readObject();
 
             disposeFileRead();
         }
@@ -67,14 +67,14 @@ public class DBRepository implements IDBRepository {
         _updateCache = true;
     }
 
-    public List<Media> queryList(FilterMedia filter) throws IOException, ClassNotFoundException {
+    public List<MediaDomain> queryList(FilterMedia filter) throws IOException, ClassNotFoundException {
         if(filter == null || !filter.isValid()) { 
             return null;
         }
 
         openFileRead(_pathDB.toString());
 
-        var listMedia = (List<Media>) _objectInputStream.readObject();
+        var listMedia = (List<MediaDomain>) _objectInputStream.readObject();
 
         disposeFileRead();
 
@@ -82,9 +82,9 @@ public class DBRepository implements IDBRepository {
         var title = filter.getTitle() != null ? filter.getTitle() : "";
 
         
-        Predicate<Media> predicate = media -> {
-            if (media instanceof MediaPlayer) {
-                var mediaPlayer = (MediaPlayer) media;
+        Predicate<MediaDomain> predicate = media -> {
+            if (media instanceof MediaPlayerDomain) {
+                var mediaPlayer = (MediaPlayerDomain) media;
                 
                 if (!title.isEmpty() && !genre.isEmpty()) {
                     return mediaPlayer.getGenre().equals(genre) && mediaPlayer.getTitle().equals(title);
@@ -102,7 +102,7 @@ public class DBRepository implements IDBRepository {
         return results;
     }
 
-    public void update(Media media) throws IOException, ClassNotFoundException {
+    public void update(MediaDomain media) throws IOException, ClassNotFoundException {
         var listMedia = queryAll();
 
         for (var mediaOld : listMedia) {
@@ -136,11 +136,11 @@ public class DBRepository implements IDBRepository {
         disposeFileWrite();
     }
 
-    private List<Media> queryAll() throws IOException, ClassNotFoundException {
+    private List<MediaDomain> queryAll() throws IOException, ClassNotFoundException {
         if (_updateCache) {
             openFileRead(_pathDB.toString());
     
-            var listMedia = (List<Media>) _objectInputStream.readObject();
+            var listMedia = (List<MediaDomain>) _objectInputStream.readObject();
     
             disposeFileRead();
 
