@@ -2,15 +2,12 @@ package edu.unipampa.poo2.mediaBank.Presentation;
 
 import edu.unipampa.poo2.mediaBank.Domain.Song;
 import edu.unipampa.poo2.mediaBank.Domain.MediaDomain;
-import edu.unipampa.poo2.mediaBank.Business.MediaHandler;
 import edu.unipampa.poo2.mediaBank.Business.SongHandler;
 
 import java.io.IOException;
 
-import java.lang.Thread;
 import java.time.LocalTime;
 import java.io.File;
-import java.net.URI;
 import java.net.URL;
 import javafx.fxml.FXMLLoader;
 import java.util.ResourceBundle;
@@ -21,14 +18,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.util.Duration;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
 import java.util.List;
-import java.util.ArrayList;
 
 public class AddSongController implements Initializable {
 

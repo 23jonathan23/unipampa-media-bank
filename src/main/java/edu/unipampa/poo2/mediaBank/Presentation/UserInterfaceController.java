@@ -1,10 +1,8 @@
 package edu.unipampa.poo2.mediaBank.Presentation;
 
-import edu.unipampa.poo2.mediaBank.Business.MediaHandler;
 import edu.unipampa.poo2.mediaBank.Business.MovieHandler;
 import edu.unipampa.poo2.mediaBank.Business.SongHandler;
 import edu.unipampa.poo2.mediaBank.Business.PhotoHandler;
-import edu.unipampa.poo2.mediaBank.Infra.Repository.DBRepository;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -15,8 +13,6 @@ import java.nio.file.Paths;
 import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import edu.unipampa.poo2.mediaBank.Domain.MediaDomain;
 // import edu.unipampa.poo2.mediaBank.Domain.Movie;

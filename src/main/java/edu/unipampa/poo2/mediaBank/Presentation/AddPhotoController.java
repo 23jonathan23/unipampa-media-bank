@@ -7,7 +7,6 @@ package edu.unipampa.poo2.mediaBank.Presentation;
 
 import edu.unipampa.poo2.mediaBank.Domain.Photo;
 import edu.unipampa.poo2.mediaBank.Domain.MediaDomain;
-import edu.unipampa.poo2.mediaBank.Business.MediaHandler;
 import edu.unipampa.poo2.mediaBank.Business.PhotoHandler;
 import java.io.File;
 import java.io.IOException;
