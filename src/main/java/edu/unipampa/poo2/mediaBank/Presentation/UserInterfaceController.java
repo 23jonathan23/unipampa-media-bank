@@ -10,7 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 // import java.time.LocalTime;
-import java.util.Calendar;
+// import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -119,13 +119,13 @@ public class UserInterfaceController implements Initializable {
             durationColumn.setMinWidth(150);
             durationColumn.setCellValueFactory(new PropertyValueFactory<>("formattedDuration"));
 
-            TableColumn<MediaDomain, Calendar> dateColumn = new TableColumn<>("Data");
-            dateColumn.setMinWidth(150);
-            dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+            // TableColumn<MediaDomain, Calendar> dateColumn = new TableColumn<>("Data");
+            // dateColumn.setMinWidth(150);
+            // dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
     
             tableView.getColumns().addAll(
                 pathColumn, titleColumn, descriptionColumn, genreColumn,
-                languageColumn, durationColumn, dateColumn
+                languageColumn, durationColumn
             );
     
             tableView.setItems(getMediaList());   
