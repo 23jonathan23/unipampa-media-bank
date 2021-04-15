@@ -1,20 +1,21 @@
 package edu.unipampa.poo2.mediaBank.Presentation;
 
+import edu.unipampa.poo2.mediaBank.Business.MediaHandler;
+import edu.unipampa.poo2.mediaBank.Business.MovieHandler;
+import edu.unipampa.poo2.mediaBank.Business.SongHandler;
+import edu.unipampa.poo2.mediaBank.Business.PhotoHandler;
+import edu.unipampa.poo2.mediaBank.Infra.Repository.DBRepository;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalTime;
-import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import edu.unipampa.poo2.mediaBank.Business.MovieHandler;
-import edu.unipampa.poo2.mediaBank.Domain.Movie;
 import javafx.fxml.FXML;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,21 +23,23 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class UserInterfaceController implements Initializable {
+    
+    private MovieHandler movieHandler;
+    private SongHandler songHandler;
+    private PhotoHandler photoHandler;
+    
     @FXML
     private Button addNewMediaButton;
+    
     @FXML
     private ChoiceBox<String> orderDropdown;
+    
     @FXML
     private ChoiceBox<String> filterDropdown;
-    @FXML
-    private TableView<Movie> tableView;
 
     FileChooser fileChooser = new FileChooser();
 
@@ -52,38 +55,7 @@ public class UserInterfaceController implements Initializable {
         if (filterDropdown != null) {
             filterDropdown.getItems().add("Gênero");
         }
-    }
 
-    private void loadMediaTable() {
-        TableColumn<Movie, String> titleColumn = (TableColumn<Movie, String>) tableView.getColumns().get(0);
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-
-        TableColumn<Movie, String> descriptionColumn = (TableColumn<Movie, String>) tableView.getColumns().get(1);
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-
-        tableView.setItems(getMovieList());;
-    }
-
-    private ObservableList<Movie> getMovieList() {
-        try {
-            MovieHandler movieHandler = new MovieHandler();
-
-            Movie movie1 = new Movie("Movie 1", "1", "1", "1", "1", LocalTime.now(), 2021, "C:/test");
-            Movie movie2 = new Movie("Movie 2", "2", "2", "2", "2", LocalTime.now(), 2021, "C:/test");
-            movieHandler.createMedia(movie1);
-            movieHandler.createMedia(movie2);
-
-            List<Movie> movieList = movieHandler.getMovies();
-
-            ObservableList<Movie> movieObservableList = FXCollections.observableArrayList(movieList);
-
-            return movieObservableList;
-        } catch (Exception e) {
-            System.out.println("Algo deu errado :(");
-            System.out.println(e);
-        }
-
-        return null;
     }
 
     @FXML
@@ -91,36 +63,93 @@ public class UserInterfaceController implements Initializable {
         Stage stage = (Stage) addNewMediaButton.getScene().getWindow();
 
         File file = fileChooser.showOpenDialog(stage);
+        if (file == null) {
+            return;
+        }
+        
         Path path = Paths.get(file.getAbsolutePath());
         String fileType = "";
         try {
             fileType = Files.probeContentType(path);
-        } catch (IOException ioe) {};
+        } catch (IOException ioe) {
+            return;
+        };
         String[] typeSpliter = fileType.split("/");
         String type = typeSpliter[0];
         System.out.println(file.getAbsolutePath());
         
         switch (type) {
             case "video":
+                try {
+
+                    movieHandler = new MovieHandler();
+                } catch (Exception e){
+                    return;
+                };
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("AddMovie.fxml"));
                 
                 Parent root = null;
                 try {
                     root = loader.load();
-                } catch (IOException ex) {};
+                } catch (IOException ex) {
+                    return;
+                };
                 AddMovieController addM = loader.getController();
             
                 Stage stage2 = new Stage();
                 stage2.setScene(new Scene(root));
                 stage2.show();
-                addM.setPath(file.getAbsolutePath());
+                Communication communication = new Communication();
+                addM.setNewMovie(file, movieHandler, communication);
                 
                 break;
 
             case "audio":
+                try {
+                    songHandler = new SongHandler();
+                } catch (Exception e) {
+                    return;
+                };
+                FXMLLoader loader2 = new FXMLLoader(getClass().getResource("AddSong.fxml"));
+                
+                Parent root3 = null;
+                try {
+                    root3 = loader2.load();
+                } catch (IOException ex) {
+                    return;
+                };
+                AddSongController addS = loader2.getController();
+            
+                Stage stage3 = new Stage();
+                stage3.setScene(new Scene(root3));
+                stage3.show();
+                Communication communication1 = new Communication();
+                Communication communication2 = new Communication();
+                addS.setNewSong(file, songHandler, communication1, communication2);
+                
                 
                 break;
             case "image":
+                try {
+                    photoHandler = new PhotoHandler();
+                } catch (Exception e) {
+                    return;
+                };
+                FXMLLoader loader3 = new FXMLLoader(getClass().getResource("AddPhoto.fxml"));
+                
+                Parent root4 = null;
+                try {
+                    root4 = loader3.load();
+                } catch (IOException ex) {
+                    return;
+                };
+                AddPhotoController addP = loader3.getController();
+            
+                Stage stage4 = new Stage();
+                stage4.setScene(new Scene(root4));
+                stage4.show();
+                Communication communication3 = new Communication();
+                addP.setNewPhoto(file, photoHandler, communication3);
                 
                 break;
         }
@@ -129,6 +158,5 @@ public class UserInterfaceController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         loadDropdownData();
-        loadMediaTable();
     }
 }

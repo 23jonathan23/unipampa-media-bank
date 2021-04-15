@@ -1,14 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.unipampa.poo2.mediaBank.Presentation;
 
-import edu.unipampa.poo2.mediaBank.Domain.Movie;
+import edu.unipampa.poo2.mediaBank.Domain.Song;
 import edu.unipampa.poo2.mediaBank.Domain.MediaDomain;
 import edu.unipampa.poo2.mediaBank.Business.MediaHandler;
-import edu.unipampa.poo2.mediaBank.Business.MovieHandler;
+import edu.unipampa.poo2.mediaBank.Business.SongHandler;
 
 import java.io.IOException;
 
@@ -35,19 +30,14 @@ import javafx.scene.Scene;
 import java.util.List;
 import java.util.ArrayList;
 
+public class AddSongController implements Initializable {
 
-/**
- * FXML Controller class
- *
- * @author mathe
- */
-public class AddMovieController implements Initializable {
-    
     public static double seconds;
     private File file;
-    private MovieHandler movieHandler;
-    private Communication communication;
-    private Movie filmao;
+    private SongHandler songHandler;
+    private Communication communication1;
+    private Communication communication2;
+    private Song musicao;
     
     @FXML
     private Button save;
@@ -74,8 +64,8 @@ public class AddMovieController implements Initializable {
     private TextField year;
     
     @FXML
-    private void createMovie(ActionEvent event) {
-        long longSec = (long) AddMovieController.seconds;
+    private void createSong(ActionEvent event) {
+        long longSec = (long) AddSongController.seconds;
         int hours =(int) longSec / 3600;
         longSec -= hours * 3600;
         int minutes =(int) longSec / 60;
@@ -100,10 +90,6 @@ public class AddMovieController implements Initializable {
         if (sLanguage == null)
             return;
         
-        String sDirector = director.getText();
-        if (sDirector == null)
-            return;
-        
         String sYear = year.getText();
         if (sYear == null)
             return;
@@ -111,23 +97,23 @@ public class AddMovieController implements Initializable {
         int ano = 0;
         try {
             ano = Integer.parseInt(sYear);
-        } catch (Exception e) {
-            return;
-        };
+        } catch (Exception e) {};
         
-        if (filmao != null) {
-            updateMovie();
+        if (musicao != null) {
+            updateSong();
             return;
         }
         
-        Movie movie = new Movie(sTitle, sDescription, sGenre, sLanguage, sDirector, time, ano, this.file.getAbsolutePath().toString());
-        movie.setActors(communication.getArrayStrings());
-        communication.setArrayStrings(null);
+        Song song = new Song(sTitle, sDescription, sGenre, sLanguage, time, ano, this.file.getAbsolutePath().toString());
+        song.setAuthors(communication1.getArrayStrings());
+        song.setInterpreters(communication2.getArrayStrings());
+        communication1.setArrayStrings(null);
+        communication2.setArrayStrings(null);
         
-        MediaDomain mediaMovie = (MediaDomain) movie;
+        MediaDomain mediaSong = (MediaDomain) song;
         
         try {
-            movieHandler.createMedia(mediaMovie);
+            songHandler.createMedia(mediaSong);
             System.out.println("deu certo o cadastro");
         } catch (IOException e){
             System.out.println(e.getMessage());
@@ -139,26 +125,22 @@ public class AddMovieController implements Initializable {
         sta.close();
     }
     
-    private void updateMovie() {
-        filmao.setTitle(title.getText());
-        filmao.setDescription(description.getText());
-        filmao.setGenre(genre.getText());
-        filmao.setLanguage(language.getText());
-        filmao.setDirector(director.getText());
-        filmao.setActors(communication.getArrayStrings());
+    private void updateSong() {
+        musicao.setTitle(title.getText());
+        musicao.setDescription(description.getText());
+        musicao.setGenre(genre.getText());
+        musicao.setLanguage(language.getText());
+        musicao.setAuthors(communication1.getArrayStrings());
+        musicao.setInterpreters(communication2.getArrayStrings());
         int ano = 0;
         try {
             ano = Integer.parseInt(year.getText());
-        } catch (Exception e) {
-            return;
-        }
-        filmao.setYear(ano);
+        } catch (Exception e) {}
+        musicao.setYear(ano);
         
         try{
-            movieHandler.updateMedia(filmao);
-        } catch (Exception e) {
-            
-        };
+            songHandler.updateMedia(musicao);
+        } catch (Exception e) {};
     }
     
     public void addPersonCallMethod() {
@@ -167,20 +149,39 @@ public class AddMovieController implements Initializable {
         Parent root = null;
         try {
             root = loader.load();
-        } catch (IOException ex) {
-            return;
-        };
+        } catch (IOException ex) {};
         AddPersonController addP = loader.getController();
             
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         
         List<String> stri = null;
-        if (filmao != null) {
-            stri = filmao.getActors();
+        if (musicao != null) {
+            stri = musicao.getAuthors();
         }
         
-        addP.loadTableFromOutside(stri, "Atores", "Adicionar atores", communication);
+        addP.loadTableFromOutside(stri, "Autores", "Adicionar adicionar", communication1);
+        stage.show();
+    }
+    
+    public void addPersonCallMethod2() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("AddPerson.fxml"));
+                
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException ex) {};
+        AddPersonController addP = loader.getController();
+            
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        
+        List<String> stri = null;
+        if (musicao != null) {
+            stri = musicao.getInterpreters();
+        }
+        
+        addP.loadTableFromOutside(stri, "Interpreters", "Adicionar interpreter", communication2);
         stage.show();
     }
     
@@ -200,24 +201,26 @@ public class AddMovieController implements Initializable {
             @Override
             public void run () {
                 System.out.println(mp.getMedia().getDuration().toSeconds());
-                AddMovieController.seconds = mp.getMedia().getDuration().toSeconds();
+                AddSongController.seconds = mp.getMedia().getDuration().toSeconds();
                 return;
             }
         });
     }
     
-    public void setNewMovie(File filePath, MovieHandler mh, Communication cm) {
+    public void setNewSong(File filePath, SongHandler sh, Communication cm1, Communication cm2) {
         path.setText(filePath.getAbsolutePath().toString());
-        communication = cm;
+        communication1 = cm1;
+        communication2 = cm2;
         file = filePath;
-        movieHandler = mh;
+        songHandler = sh;
         setDuration(filePath);
     }
     
-    public void editMovie(MovieHandler mh, Communication cm, Movie filme) {
-        communication = cm;
-        movieHandler = mh;
-        filmao = filme;
+    public void editSong(SongHandler sh, Communication cm1, Communication cm2, Song musica) {
+        communication1 = cm1;
+        communication2 = cm2;
+        songHandler = sh;
+        musicao = musica;
     } 
     
     @Override

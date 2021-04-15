@@ -11,12 +11,11 @@ public class Photo extends MediaDomain {
     private static final long serialVersionUID = -1271934389395100274L;
     
     public Photo(String title, String description, String photographer, 
-        List<String> people, String place, Calendar date, String pathFile) {
+            String place, Calendar date, String pathFile) {
 
         super(title, description, pathFile);
 
         _photographer = photographer;
-        _people = people;
         _place = place;
         _date = date;
     }
