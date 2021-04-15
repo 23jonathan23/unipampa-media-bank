@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import edu.unipampa.poo2.mediaBank.Business.MovieHandler;
+import edu.unipampa.poo2.mediaBank.Domain.MediaDomain;
 import edu.unipampa.poo2.mediaBank.Domain.Movie;
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
@@ -36,7 +37,7 @@ public class UserInterfaceController implements Initializable {
     @FXML
     private ChoiceBox<String> filterDropdown;
     @FXML
-    private TableView<Movie> tableView;
+    private TableView<MediaDomain> tableView;
 
     FileChooser fileChooser = new FileChooser();
 
@@ -55,29 +56,38 @@ public class UserInterfaceController implements Initializable {
     }
 
     private void loadMediaTable() {
-        TableColumn<Movie, String> titleColumn = (TableColumn<Movie, String>) tableView.getColumns().get(0);
+        TableColumn<MediaDomain, String> titleColumn = new TableColumn<>("Título");
+        titleColumn.setMinWidth(200);
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
 
-        TableColumn<Movie, String> descriptionColumn = (TableColumn<Movie, String>) tableView.getColumns().get(1);
+        TableColumn<MediaDomain, String> descriptionColumn = new TableColumn<>("Descrição");
+        descriptionColumn.setMinWidth(200);
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
 
-        tableView.setItems(getMovieList());;
+        TableColumn<MediaDomain, String> genreColumn = new TableColumn<>("Gênero");
+        genreColumn.setMinWidth(200);
+        genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
+
+        tableView.getColumns().addAll(titleColumn, descriptionColumn, genreColumn);
+        tableView.setItems(getMediaList());
     }
 
-    private ObservableList<Movie> getMovieList() {
+    private ObservableList<MediaDomain> getMediaList() {
         try {
             MovieHandler movieHandler = new MovieHandler();
 
-            Movie movie1 = new Movie("Movie 1", "1", "1", "1", "1", LocalTime.now(), 2021, "C:/test");
-            Movie movie2 = new Movie("Movie 2", "2", "2", "2", "2", LocalTime.now(), 2021, "C:/test");
+            Movie movie1 = new Movie("Título do filme 1", "Descrição do filme 1", "1", "1", "1", LocalTime.now(), 2021, "C:/test");
             movieHandler.createMedia(movie1);
+            Movie movie2 = new Movie("Título do filme 2", "Descrição do filme 2", "2", "2", "2", LocalTime.now(), 2021, "C:/test");
             movieHandler.createMedia(movie2);
+            Movie movie3 = new Movie("Título do filme 3", "Descrição do filme 3", "3", "3", "3", LocalTime.now(), 3021, "C:/test");
+            movieHandler.createMedia(movie3);
 
-            List<Movie> movieList = movieHandler.getMovies();
+            List<MediaDomain> mediaList = movieHandler.getMedias();
 
-            ObservableList<Movie> movieObservableList = FXCollections.observableArrayList(movieList);
+            ObservableList<MediaDomain> mediaObservableList = FXCollections.observableArrayList(mediaList);
 
-            return movieObservableList;
+            return mediaObservableList;
         } catch (Exception e) {
             System.out.println("Algo deu errado :(");
             System.out.println(e);
