@@ -6,9 +6,15 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import edu.unipampa.poo2.mediaBank.Business.MovieHandler;
+import edu.unipampa.poo2.mediaBank.Domain.Movie;
 import javafx.fxml.FXML;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,19 +22,21 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class UserInterfaceController implements Initializable {
-    
     @FXML
     private Button addNewMediaButton;
-    
     @FXML
     private ChoiceBox<String> orderDropdown;
-    
     @FXML
     private ChoiceBox<String> filterDropdown;
+    @FXML
+    private TableView<Movie> tableView;
 
     FileChooser fileChooser = new FileChooser();
 
@@ -44,7 +52,38 @@ public class UserInterfaceController implements Initializable {
         if (filterDropdown != null) {
             filterDropdown.getItems().add("Gênero");
         }
+    }
 
+    private void loadMediaTable() {
+        TableColumn<Movie, String> titleColumn = (TableColumn<Movie, String>) tableView.getColumns().get(0);
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+
+        TableColumn<Movie, String> descriptionColumn = (TableColumn<Movie, String>) tableView.getColumns().get(1);
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+
+        tableView.setItems(getMovieList());;
+    }
+
+    private ObservableList<Movie> getMovieList() {
+        try {
+            MovieHandler movieHandler = new MovieHandler();
+
+            Movie movie1 = new Movie("Movie 1", "1", "1", "1", "1", LocalTime.now(), 2021, "C:/test");
+            Movie movie2 = new Movie("Movie 2", "2", "2", "2", "2", LocalTime.now(), 2021, "C:/test");
+            movieHandler.createMedia(movie1);
+            movieHandler.createMedia(movie2);
+
+            List<Movie> movieList = movieHandler.getMovies();
+
+            ObservableList<Movie> movieObservableList = FXCollections.observableArrayList(movieList);
+
+            return movieObservableList;
+        } catch (Exception e) {
+            System.out.println("Algo deu errado :(");
+            System.out.println(e);
+        }
+
+        return null;
     }
 
     @FXML
@@ -90,5 +129,6 @@ public class UserInterfaceController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         loadDropdownData();
+        loadMediaTable();
     }
 }

@@ -136,7 +136,7 @@ public class DBRepository implements IDBRepository {
         disposeFileWrite();
     }
 
-    private List<MediaDomain> queryAll() throws IOException, ClassNotFoundException {
+    public List<MediaDomain> queryAll() throws IOException, ClassNotFoundException {
         if (_updateCache) {
             openFileRead(_pathDB.toString());
     

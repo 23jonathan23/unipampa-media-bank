@@ -7,11 +7,11 @@ import edu.unipampa.poo2.mediaBank.Infra.Repository.DBRepository;
 import java.io.IOException;
 
 public abstract class MediaHandler {
-    protected DBRepository repository;
+    protected DBRepository repository = new DBRepository();
     protected static FilterMedia filter = new FilterMedia();
 
-    public MediaHandler(DBRepository repository) {
-        this.repository = repository;
+    public MediaHandler() throws IOException {
+        this.repository = new DBRepository();
     }
     
     public void deleteMedia(int id) throws ClassNotFoundException, IOException {
