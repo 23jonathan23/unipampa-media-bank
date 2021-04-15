@@ -28,6 +28,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -70,7 +71,7 @@ public class UserInterfaceController implements Initializable {
                 ObservableList<MediaDomain> mediasFoundObservableList = FXCollections.observableArrayList(mediasFound);
                 tableView.setItems(mediasFoundObservableList);
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                UserInterfaceController.showMessage("Erro","Ouve um problema inesperado, por favor tente novamente", Alert.AlertType.ERROR);
             }
         }
 
@@ -90,11 +91,20 @@ public class UserInterfaceController implements Initializable {
                 ObservableList<MediaDomain> mediasFoundObservableList = FXCollections.observableArrayList(mediasFound);
                 tableView.setItems(mediasFoundObservableList);
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                UserInterfaceController.showMessage("Erro","Ouve um problema inesperado, por favor tente novamente", Alert.AlertType.ERROR);
             }
         }
 
         searchByTitleInput.setText("");
+    }
+    
+    public static void showMessage(String title, String message, Alert.AlertType alertType) {
+         Alert component = new Alert(Alert.AlertType.NONE);
+
+        component.setAlertType(alertType);
+        component.setTitle(title);
+        component.setContentText(message);
+        component.show();
     }
 
     private void loadMediaTable() {
@@ -134,7 +144,7 @@ public class UserInterfaceController implements Initializable {
     
             tableView.setItems(getMediaList());   
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            UserInterfaceController.showMessage("Erro","Ouve um problema inesperado, por favor feiche e abrar novamente", Alert.AlertType.ERROR);
         }
     }
 
@@ -142,21 +152,13 @@ public class UserInterfaceController implements Initializable {
         try {
             MovieHandler movieHandler = new MovieHandler();
 
-            // Movie movie1 = new Movie("A - Título do filme 1", "A - Descrição do filme 1", "Ação", "Inglês", "1", LocalTime.now(), 2021, "C:/user/filme-1");
-            // movieHandler.createMedia(movie1);
-            // Movie movie2 = new Movie("B - Título do filme 2", "B - Descrição do filme 2", "Terror", "Português", "2", LocalTime.now(), 2021, "C:/user/filme-2");
-            // movieHandler.createMedia(movie2);
-            // Movie movie3 = new Movie("C - Título do filme 3", "C - Descrição do filme 3", "Aventura", "Francês", "3", LocalTime.now(), 3021, "C:/user/filme-3");
-            // movieHandler.createMedia(movie3);
-
             List<MediaDomain> mediaList = movieHandler.getMedias();
 
             ObservableList<MediaDomain> mediaObservableList = FXCollections.observableArrayList(mediaList);
 
             return mediaObservableList;
         } catch (Exception e) {
-            System.out.println("Algo deu errado :(");
-            System.out.println(e);
+            UserInterfaceController.showMessage("Erro","Ouve um problema inesperado ao carregar as medias, por favor tente novamente", Alert.AlertType.ERROR);
         }
 
         return null;
@@ -168,6 +170,7 @@ public class UserInterfaceController implements Initializable {
 
         File file = fileChooser.showOpenDialog(stage);
         if (file == null) {
+            UserInterfaceController.showMessage("Aviso","Media não forneceida, por favor selecione um arquivo", Alert.AlertType.WARNING);
             return;
         }
         
@@ -176,18 +179,18 @@ public class UserInterfaceController implements Initializable {
         try {
             fileType = Files.probeContentType(path);
         } catch (IOException ioe) {
+            UserInterfaceController.showMessage("Aviso","Arquivo de media invalido", Alert.AlertType.WARNING);
             return;
         };
         String[] typeSpliter = fileType.split("/");
         String type = typeSpliter[0];
-        System.out.println(file.getAbsolutePath());
         
         switch (type) {
             case "video":
                 try {
-
                     movieHandler = new MovieHandler();
                 } catch (Exception e){
+                    UserInterfaceController.showMessage("Erro","Ouve um problema inesperado, por favor tente novamente", Alert.AlertType.ERROR);
                     return;
                 };
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("AddMovie.fxml"));
@@ -196,6 +199,7 @@ public class UserInterfaceController implements Initializable {
                 try {
                     root = loader.load();
                 } catch (IOException ex) {
+                    UserInterfaceController.showMessage("Erro","Ouve um problema inesperado, por favor tente novamente", Alert.AlertType.ERROR);
                     return;
                 };
                 AddMovieController addM = loader.getController();
@@ -212,6 +216,7 @@ public class UserInterfaceController implements Initializable {
                 try {
                     songHandler = new SongHandler();
                 } catch (Exception e) {
+                    UserInterfaceController.showMessage("Erro","Ouve um problema inesperado, por favor tente novamente", Alert.AlertType.ERROR);
                     return;
                 };
                 FXMLLoader loader2 = new FXMLLoader(getClass().getResource("AddSong.fxml"));
@@ -220,6 +225,7 @@ public class UserInterfaceController implements Initializable {
                 try {
                     root3 = loader2.load();
                 } catch (IOException ex) {
+                    UserInterfaceController.showMessage("Erro","Ouve um problema inesperado, por favor tente novamente", Alert.AlertType.ERROR);
                     return;
                 };
                 AddSongController addS = loader2.getController();
@@ -237,6 +243,7 @@ public class UserInterfaceController implements Initializable {
                 try {
                     photoHandler = new PhotoHandler();
                 } catch (Exception e) {
+                    UserInterfaceController.showMessage("Erro","Ouve um problema inesperado, por favor tente novamente", Alert.AlertType.ERROR);
                     return;
                 };
                 FXMLLoader loader3 = new FXMLLoader(getClass().getResource("AddPhoto.fxml"));
@@ -245,6 +252,7 @@ public class UserInterfaceController implements Initializable {
                 try {
                     root4 = loader3.load();
                 } catch (IOException ex) {
+                    UserInterfaceController.showMessage("Erro","Ouve um problema inesperado, por favor tente novamente", Alert.AlertType.ERROR);
                     return;
                 };
                 AddPhotoController addP = loader3.getController();

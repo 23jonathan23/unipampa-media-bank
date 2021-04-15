@@ -34,6 +34,8 @@ import javafx.scene.Scene;
 
 import java.util.List;
 import java.util.ArrayList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 
 /**
@@ -85,33 +87,46 @@ public class AddMovieController implements Initializable {
         LocalTime time = LocalTime.of(hours, minutes, intSec);
         
         String sTitle = title.getText();
-        if (sTitle == null)
+        if (sTitle == null || sTitle.isEmpty() || sTitle.trim().isEmpty()) {
+            UserInterfaceController.showMessage("Aviso","O titulo informado não é valido, por favor informe outro valor", Alert.AlertType.WARNING);
             return;
+        }
         
         String sDescription = description.getText();
-        if (sDescription == null)
+        if (sDescription == null){
+            UserInterfaceController.showMessage("Aviso","A descrição informada não é valida, por favor informe outro valor", Alert.AlertType.WARNING);
             return;
+        }
         
         String sGenre = genre.getText();
-        if (sGenre == null)
+        if (sGenre == null || sGenre.isEmpty() || sGenre.trim().isEmpty()){
+            UserInterfaceController.showMessage("Aviso","O genero informado não é valido, por favor informe outro valor", Alert.AlertType.WARNING);
             return;
+        }
         
         String sLanguage = language.getText();
-        if (sLanguage == null)
+        if (sLanguage == null || sLanguage.isEmpty() || sLanguage.trim().isEmpty()){
+            UserInterfaceController.showMessage("Aviso","A linguagem informada não é valida, por favor informe outro valor", Alert.AlertType.WARNING);
             return;
+        }
         
         String sDirector = director.getText();
-        if (sDirector == null)
+        if (sDirector == null || sDirector.isEmpty() || sDirector.trim().isEmpty()){
+            UserInterfaceController.showMessage("Aviso","O diretor informado não é valida, por favor informe outro valor", Alert.AlertType.WARNING);
             return;
+        }
         
         String sYear = year.getText();
-        if (sYear == null)
+        if (sYear == null || sYear.isEmpty() || sYear.trim().isEmpty()){
+            UserInterfaceController.showMessage("Aviso","O ano informado não é valido, por favor informe outro valor", Alert.AlertType.WARNING);
             return;
+        }
         
         int ano = 0;
         try {
             ano = Integer.parseInt(sYear);
         } catch (Exception e) {
+            UserInterfaceController.showMessage("Aviso","O ano informado não é valido, por favor informe outro valor", AlertType.WARNING);
             return;
         };
         
@@ -128,11 +143,11 @@ public class AddMovieController implements Initializable {
         
         try {
             movieHandler.createMedia(mediaMovie);
-            System.out.println("deu certo o cadastro");
+            UserInterfaceController.showMessage("Informativo","Cadastro realizado com sucesso", AlertType.INFORMATION);
         } catch (IOException e){
-            System.out.println(e.getMessage());
+            UserInterfaceController.showMessage("Erro","Ouve um problema ao tentar realizar o cadastro, por favor tente novamente", AlertType.ERROR);
         } catch (ClassNotFoundException cnf) {
-            System.out.println(cnf.getMessage());
+            UserInterfaceController.showMessage("Erro","Ouve um problema ao tentar realizar o cadastro, por favor tente novamente", AlertType.ERROR);
         }
         
         Stage sta = (Stage) save.getScene().getWindow();
@@ -150,14 +165,16 @@ public class AddMovieController implements Initializable {
         try {
             ano = Integer.parseInt(year.getText());
         } catch (Exception e) {
+            UserInterfaceController.showMessage("Aviso","O ano informado não é valido, por favor informe outro valor", AlertType.WARNING);
             return;
         }
         filmao.setYear(ano);
         
         try{
             movieHandler.updateMedia(filmao);
+            UserInterfaceController.showMessage("Informativo","Atualização realizada com sucesso", Alert.AlertType.INFORMATION);
         } catch (Exception e) {
-            
+            UserInterfaceController.showMessage("Erro","Ouve um problema ao tentar realizar a atualização, por favor tente novamente", AlertType.ERROR);
         };
     }
     
@@ -168,6 +185,7 @@ public class AddMovieController implements Initializable {
         try {
             root = loader.load();
         } catch (IOException ex) {
+            UserInterfaceController.showMessage("Erro","Ouve um problema inesperado, por favor tente novamente", AlertType.ERROR);
             return;
         };
         AddPersonController addP = loader.getController();
@@ -187,12 +205,10 @@ public class AddMovieController implements Initializable {
     private void setDuration(File file) {
         Media m = null;
         try {
-            String resultado = file.toURI().toString();
-            System.out.println(resultado);
-            
+            String resultado = file.toURI().toString();     
             m = new Media(resultado);
         } catch (Exception e){
-            System.out.println(e.getMessage());
+            UserInterfaceController.showMessage("Erro","Ouve um problema inesperado, por favor tente novamente", AlertType.ERROR);
             return;
         };
         MediaPlayer mp = new MediaPlayer(m);
