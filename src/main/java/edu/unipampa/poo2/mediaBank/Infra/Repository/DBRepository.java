@@ -78,21 +78,27 @@ public class DBRepository implements IDBRepository {
 
         disposeFileRead();
 
-        var genre = filter.getGenre() != null ? filter.getGenre() : "";
-        var title = filter.getTitle() != null ? filter.getTitle() : "";
+        var genre = filter.getGenre();
+        var title = filter.getTitle();
 
-        
         Predicate<MediaDomain> predicate = media -> {
             if (media instanceof MediaPlayerDomain) {
                 var mediaPlayer = (MediaPlayerDomain) media;
-                
-                if (!title.isEmpty() && !genre.isEmpty()) {
-                    return mediaPlayer.getGenre().equals(genre) && mediaPlayer.getTitle().equals(title);
-                } else {
-                    return mediaPlayer.getGenre().equals(genre) || mediaPlayer.getTitle().equals(title);
+            
+                boolean genreWasFound = false;
+                boolean titleWasFound = false;
+
+                if (genre != null) {
+                    genreWasFound = mediaPlayer.getGenre().toLowerCase().contains(genre.toLowerCase());
                 }
+
+                if (title != null) {
+                    titleWasFound = mediaPlayer.getTitle().toLowerCase().contains(title.toLowerCase());
+                }
+
+                return genreWasFound || titleWasFound;
             } else {
-                return media.getTitle().equals(title);
+                return media.getTitle().toLowerCase().contains(title.toLowerCase());
             }
         };
 

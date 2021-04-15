@@ -6,14 +6,14 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalTime;
+// import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import edu.unipampa.poo2.mediaBank.Business.MovieHandler;
 import edu.unipampa.poo2.mediaBank.Domain.MediaDomain;
-import edu.unipampa.poo2.mediaBank.Domain.Movie;
+// import edu.unipampa.poo2.mediaBank.Domain.Movie;
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -50,15 +50,17 @@ public class UserInterfaceController implements Initializable {
     private void handleSearchByTitle(ActionEvent event) {
         String inputText = searchByTitleInput.getText();
         
-        if (inputText == "") tableView.setItems(getMediaList());
-
-        try {
-            MovieHandler movieHandler = new MovieHandler();
-            List<MediaDomain> mediasFound = movieHandler.getMediasByFilter(inputText, "");
-            ObservableList<MediaDomain> mediasFoundObservableList = FXCollections.observableArrayList(mediasFound);
-            tableView.setItems(mediasFoundObservableList);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        if (inputText == "") {
+            tableView.setItems(getMediaList());
+        } else {
+            try {
+                MovieHandler movieHandler = new MovieHandler();
+                List<MediaDomain> mediasFound = movieHandler.getMediasByFilter(inputText, null);
+                ObservableList<MediaDomain> mediasFoundObservableList = FXCollections.observableArrayList(mediasFound);
+                tableView.setItems(mediasFoundObservableList);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
 
         searchByGenreInput.setText("");
@@ -68,15 +70,17 @@ public class UserInterfaceController implements Initializable {
     private void handleSearchByGenre(ActionEvent event) {
         String inputText = searchByGenreInput.getText();
         
-        if (inputText == "") tableView.setItems(getMediaList());
-
-        try {
-            MovieHandler movieHandler = new MovieHandler();
-            List<MediaDomain> mediasFound = movieHandler.getMediasByFilter("", inputText);
-            ObservableList<MediaDomain> mediasFoundObservableList = FXCollections.observableArrayList(mediasFound);
-            tableView.setItems(mediasFoundObservableList);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        if (inputText == "") {
+            tableView.setItems(getMediaList());
+        } else {
+            try {
+                MovieHandler movieHandler = new MovieHandler();
+                List<MediaDomain> mediasFound = movieHandler.getMediasByFilter(null, inputText);
+                ObservableList<MediaDomain> mediasFoundObservableList = FXCollections.observableArrayList(mediasFound);
+                tableView.setItems(mediasFoundObservableList);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
 
         searchByTitleInput.setText("");
@@ -127,12 +131,12 @@ public class UserInterfaceController implements Initializable {
         try {
             MovieHandler movieHandler = new MovieHandler();
 
-            Movie movie1 = new Movie("A - Título do filme 1", "A - Descrição do filme 1", "Ação", "Inglês", "1", LocalTime.now(), 2021, "C:/user/filme-1");
-            movieHandler.createMedia(movie1);
-            Movie movie2 = new Movie("B - Título do filme 2", "B - Descrição do filme 2", "Terror", "Português", "2", LocalTime.now(), 2021, "C:/user/filme-2");
-            movieHandler.createMedia(movie2);
-            Movie movie3 = new Movie("C - Título do filme 3", "C - Descrição do filme 3", "Aventura", "Francês", "3", LocalTime.now(), 3021, "C:/user/filme-3");
-            movieHandler.createMedia(movie3);
+            // Movie movie1 = new Movie("A - Título do filme 1", "A - Descrição do filme 1", "Ação", "Inglês", "1", LocalTime.now(), 2021, "C:/user/filme-1");
+            // movieHandler.createMedia(movie1);
+            // Movie movie2 = new Movie("B - Título do filme 2", "B - Descrição do filme 2", "Terror", "Português", "2", LocalTime.now(), 2021, "C:/user/filme-2");
+            // movieHandler.createMedia(movie2);
+            // Movie movie3 = new Movie("C - Título do filme 3", "C - Descrição do filme 3", "Aventura", "Francês", "3", LocalTime.now(), 3021, "C:/user/filme-3");
+            // movieHandler.createMedia(movie3);
 
             List<MediaDomain> mediaList = movieHandler.getMedias();
 
