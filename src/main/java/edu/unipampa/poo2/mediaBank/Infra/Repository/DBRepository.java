@@ -98,7 +98,10 @@ public class DBRepository implements IDBRepository {
 
                 return genreWasFound || titleWasFound;
             } else {
-                return media.getTitle().toLowerCase().contains(title.toLowerCase());
+                if (title != null) {
+                    return media.getTitle().toLowerCase().contains(title.toLowerCase());
+                }
+                return false;
             }
         };
 
