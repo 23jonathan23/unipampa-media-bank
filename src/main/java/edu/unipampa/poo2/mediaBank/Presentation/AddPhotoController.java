@@ -7,7 +7,6 @@ package edu.unipampa.poo2.mediaBank.Presentation;
 
 import edu.unipampa.poo2.mediaBank.Domain.Photo;
 import edu.unipampa.poo2.mediaBank.Domain.MediaDomain;
-import edu.unipampa.poo2.mediaBank.Business.MediaHandler;
 import edu.unipampa.poo2.mediaBank.Business.PhotoHandler;
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +24,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -34,6 +34,7 @@ public class AddPhotoController implements Initializable {
     private PhotoHandler photoHandler;
     private Communication communication;
     private Photo fotao;
+    private TableView<MediaDomain> tableView;
     
     @FXML
     private Button pessoas;
@@ -138,6 +139,8 @@ public class AddPhotoController implements Initializable {
         try {
             photoHandler.createMedia(mediaPhoto);
             UserInterfaceController.showMessage("Informativo","Cadastro realizado com sucesso", Alert.AlertType.INFORMATION);
+            tableView.setItems(UserInterfaceController.getMediaList());
+            System.out.println("Media cadastrada com sucesso.");
         } catch (IOException e){
             UserInterfaceController.showMessage("Erro","Ouve um problema ao tentar realizar o cadastro, por favor tente novamente", Alert.AlertType.ERROR);
         } catch (ClassNotFoundException cnf) {
@@ -188,11 +191,12 @@ public class AddPhotoController implements Initializable {
         stage.show();
     }
 
-    public void setNewPhoto(File filePath, PhotoHandler ph, Communication cm) {
+    public void setNewPhoto(File filePath, PhotoHandler ph, Communication cm, TableView<MediaDomain> tb) {
         path.setText(filePath.getAbsolutePath().toString());
         communication = cm;
         file = filePath;
         photoHandler = ph;
+        tableView = tb;
     }
     
     public void editPhoto(PhotoHandler ph, Communication cm, Photo foto) {

@@ -2,15 +2,12 @@ package edu.unipampa.poo2.mediaBank.Presentation;
 
 import edu.unipampa.poo2.mediaBank.Domain.Song;
 import edu.unipampa.poo2.mediaBank.Domain.MediaDomain;
-import edu.unipampa.poo2.mediaBank.Business.MediaHandler;
 import edu.unipampa.poo2.mediaBank.Business.SongHandler;
 
 import java.io.IOException;
 
-import java.lang.Thread;
 import java.time.LocalTime;
 import java.io.File;
-import java.net.URI;
 import java.net.URL;
 import javafx.fxml.FXMLLoader;
 import java.util.ResourceBundle;
@@ -18,10 +15,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.util.Duration;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.Parent;
@@ -39,6 +36,7 @@ public class AddSongController implements Initializable {
     private Communication communication1;
     private Communication communication2;
     private Song musicao;
+    private TableView<MediaDomain> tableView;
     
     @FXML
     private Button save;
@@ -127,6 +125,7 @@ public class AddSongController implements Initializable {
         try {
             songHandler.createMedia(mediaSong);
             UserInterfaceController.showMessage("Informativo","Cadastro realizado com sucesso", Alert.AlertType.INFORMATION);
+            tableView.setItems(UserInterfaceController.getMediaList());
         } catch (IOException e){
             UserInterfaceController.showMessage("Erro","Ouve um problema ao tentar realizar o cadastro, por favor tente novamente", Alert.AlertType.ERROR);
         } catch (ClassNotFoundException cnf) {
@@ -229,12 +228,13 @@ public class AddSongController implements Initializable {
         });
     }
     
-    public void setNewSong(File filePath, SongHandler sh, Communication cm1, Communication cm2) {
+    public void setNewSong(File filePath, SongHandler sh, Communication cm1, Communication cm2, TableView<MediaDomain> tb) {
         path.setText(filePath.getAbsolutePath().toString());
         communication1 = cm1;
         communication2 = cm2;
         file = filePath;
         songHandler = sh;
+        tableView = tb;
         setDuration(filePath);
     }
     

@@ -1,10 +1,8 @@
 package edu.unipampa.poo2.mediaBank.Presentation;
 
-import edu.unipampa.poo2.mediaBank.Business.MediaHandler;
 import edu.unipampa.poo2.mediaBank.Business.MovieHandler;
 import edu.unipampa.poo2.mediaBank.Business.SongHandler;
 import edu.unipampa.poo2.mediaBank.Business.PhotoHandler;
-import edu.unipampa.poo2.mediaBank.Infra.Repository.DBRepository;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -12,11 +10,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 // import java.time.LocalTime;
-import java.util.Calendar;
+// import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import edu.unipampa.poo2.mediaBank.Domain.MediaDomain;
 // import edu.unipampa.poo2.mediaBank.Domain.Movie;
@@ -133,13 +129,13 @@ public class UserInterfaceController implements Initializable {
             durationColumn.setMinWidth(150);
             durationColumn.setCellValueFactory(new PropertyValueFactory<>("formattedDuration"));
 
-            TableColumn<MediaDomain, Calendar> dateColumn = new TableColumn<>("Data");
-            dateColumn.setMinWidth(150);
-            dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+            // TableColumn<MediaDomain, Calendar> dateColumn = new TableColumn<>("Data");
+            // dateColumn.setMinWidth(150);
+            // dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
     
             tableView.getColumns().addAll(
                 pathColumn, titleColumn, descriptionColumn, genreColumn,
-                languageColumn, durationColumn, dateColumn
+                languageColumn, durationColumn
             );
     
             tableView.setItems(getMediaList());   
@@ -148,7 +144,7 @@ public class UserInterfaceController implements Initializable {
         }
     }
 
-    private ObservableList<MediaDomain> getMediaList() {
+    public static ObservableList<MediaDomain> getMediaList() {
         try {
             MovieHandler movieHandler = new MovieHandler();
 
@@ -208,7 +204,7 @@ public class UserInterfaceController implements Initializable {
                 stage2.setScene(new Scene(root));
                 stage2.show();
                 Communication communication = new Communication();
-                addM.setNewMovie(file, movieHandler, communication);
+                addM.setNewMovie(file, movieHandler, communication, tableView);
                 
                 break;
 
@@ -235,7 +231,7 @@ public class UserInterfaceController implements Initializable {
                 stage3.show();
                 Communication communication1 = new Communication();
                 Communication communication2 = new Communication();
-                addS.setNewSong(file, songHandler, communication1, communication2);
+                addS.setNewSong(file, songHandler, communication1, communication2, tableView);
                 
                 
                 break;
@@ -261,7 +257,7 @@ public class UserInterfaceController implements Initializable {
                 stage4.setScene(new Scene(root4));
                 stage4.show();
                 Communication communication3 = new Communication();
-                addP.setNewPhoto(file, photoHandler, communication3);
+                addP.setNewPhoto(file, photoHandler, communication3, tableView);
                 
                 break;
         }

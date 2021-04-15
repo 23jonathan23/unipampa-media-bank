@@ -7,15 +7,12 @@ package edu.unipampa.poo2.mediaBank.Presentation;
 
 import edu.unipampa.poo2.mediaBank.Domain.Movie;
 import edu.unipampa.poo2.mediaBank.Domain.MediaDomain;
-import edu.unipampa.poo2.mediaBank.Business.MediaHandler;
 import edu.unipampa.poo2.mediaBank.Business.MovieHandler;
 
 import java.io.IOException;
 
-import java.lang.Thread;
 import java.time.LocalTime;
 import java.io.File;
-import java.net.URI;
 import java.net.URL;
 import javafx.fxml.FXMLLoader;
 import java.util.ResourceBundle;
@@ -23,10 +20,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.util.Duration;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.Parent;
@@ -36,7 +33,6 @@ import java.util.List;
 import java.util.ArrayList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-
 
 /**
  * FXML Controller class
@@ -50,6 +46,7 @@ public class AddMovieController implements Initializable {
     private MovieHandler movieHandler;
     private Communication communication;
     private Movie filmao;
+    private TableView<MediaDomain> tableView;
     
     @FXML
     private Button save;
@@ -144,6 +141,7 @@ public class AddMovieController implements Initializable {
         try {
             movieHandler.createMedia(mediaMovie);
             UserInterfaceController.showMessage("Informativo","Cadastro realizado com sucesso", AlertType.INFORMATION);
+            tableView.setItems(UserInterfaceController.getMediaList());
         } catch (IOException e){
             UserInterfaceController.showMessage("Erro","Ouve um problema ao tentar realizar o cadastro, por favor tente novamente", AlertType.ERROR);
         } catch (ClassNotFoundException cnf) {
@@ -222,11 +220,12 @@ public class AddMovieController implements Initializable {
         });
     }
     
-    public void setNewMovie(File filePath, MovieHandler mh, Communication cm) {
+    public void setNewMovie(File filePath, MovieHandler mh, Communication cm, TableView<MediaDomain> tb) {
         path.setText(filePath.getAbsolutePath().toString());
         communication = cm;
         file = filePath;
         movieHandler = mh;
+        tableView = tb;
         setDuration(filePath);
     }
     
