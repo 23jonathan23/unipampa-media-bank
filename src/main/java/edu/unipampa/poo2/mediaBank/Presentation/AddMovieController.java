@@ -122,7 +122,7 @@ public class AddMovieController implements Initializable {
         
         try {
             movieHandler.createMedia(mediaMovie);
-            System.out.println("deu certo o cadastro");
+            System.out.println("Media cadastrada com sucesso.");
         } catch (IOException e){
             System.out.println(e.getMessage());
         } catch (ClassNotFoundException cnf) {
