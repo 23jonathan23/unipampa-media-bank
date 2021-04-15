@@ -23,6 +23,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -32,6 +33,7 @@ public class AddPhotoController implements Initializable {
     private PhotoHandler photoHandler;
     private Communication communication;
     private Photo fotao;
+    private TableView<MediaDomain> tableView;
     
     @FXML
     private Button pessoas;
@@ -123,6 +125,7 @@ public class AddPhotoController implements Initializable {
         
         try {
             photoHandler.createMedia(mediaPhoto);
+            tableView.setItems(UserInterfaceController.getMediaList());
             System.out.println("Media cadastrada com sucesso.");
         } catch (IOException e){
             System.out.println(e.getMessage());
@@ -171,11 +174,12 @@ public class AddPhotoController implements Initializable {
         stage.show();
     }
 
-    public void setNewPhoto(File filePath, PhotoHandler ph, Communication cm) {
+    public void setNewPhoto(File filePath, PhotoHandler ph, Communication cm, TableView<MediaDomain> tb) {
         path.setText(filePath.getAbsolutePath().toString());
         communication = cm;
         file = filePath;
         photoHandler = ph;
+        tableView = tb;
     }
     
     public void editPhoto(PhotoHandler ph, Communication cm, Photo foto) {

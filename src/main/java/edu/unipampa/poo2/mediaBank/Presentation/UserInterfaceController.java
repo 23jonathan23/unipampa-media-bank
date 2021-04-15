@@ -134,7 +134,7 @@ public class UserInterfaceController implements Initializable {
         }
     }
 
-    private ObservableList<MediaDomain> getMediaList() {
+    public static ObservableList<MediaDomain> getMediaList() {
         try {
             MovieHandler movieHandler = new MovieHandler();
 
@@ -200,7 +200,7 @@ public class UserInterfaceController implements Initializable {
                 stage2.setScene(new Scene(root));
                 stage2.show();
                 Communication communication = new Communication();
-                addM.setNewMovie(file, movieHandler, communication);
+                addM.setNewMovie(file, movieHandler, communication, tableView);
                 
                 break;
 
@@ -225,7 +225,7 @@ public class UserInterfaceController implements Initializable {
                 stage3.show();
                 Communication communication1 = new Communication();
                 Communication communication2 = new Communication();
-                addS.setNewSong(file, songHandler, communication1, communication2);
+                addS.setNewSong(file, songHandler, communication1, communication2, tableView);
                 
                 
                 break;
@@ -249,7 +249,7 @@ public class UserInterfaceController implements Initializable {
                 stage4.setScene(new Scene(root4));
                 stage4.show();
                 Communication communication3 = new Communication();
-                addP.setNewPhoto(file, photoHandler, communication3);
+                addP.setNewPhoto(file, photoHandler, communication3, tableView);
                 
                 break;
         }

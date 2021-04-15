@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -33,6 +34,7 @@ public class AddSongController implements Initializable {
     private Communication communication1;
     private Communication communication2;
     private Song musicao;
+    private TableView<MediaDomain> tableView;
     
     @FXML
     private Button save;
@@ -109,6 +111,7 @@ public class AddSongController implements Initializable {
         
         try {
             songHandler.createMedia(mediaSong);
+            tableView.setItems(UserInterfaceController.getMediaList());
             System.out.println("Media cadastrada com sucesso.");
         } catch (IOException e){
             System.out.println(e.getMessage());
@@ -202,12 +205,13 @@ public class AddSongController implements Initializable {
         });
     }
     
-    public void setNewSong(File filePath, SongHandler sh, Communication cm1, Communication cm2) {
+    public void setNewSong(File filePath, SongHandler sh, Communication cm1, Communication cm2, TableView<MediaDomain> tb) {
         path.setText(filePath.getAbsolutePath().toString());
         communication1 = cm1;
         communication2 = cm2;
         file = filePath;
         songHandler = sh;
+        tableView = tb;
         setDuration(filePath);
     }
     

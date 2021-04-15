@@ -20,6 +20,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -42,6 +43,7 @@ public class AddMovieController implements Initializable {
     private MovieHandler movieHandler;
     private Communication communication;
     private Movie filmao;
+    private TableView<MediaDomain> tableView;
     
     @FXML
     private Button save;
@@ -122,6 +124,7 @@ public class AddMovieController implements Initializable {
         
         try {
             movieHandler.createMedia(mediaMovie);
+            tableView.setItems(UserInterfaceController.getMediaList());
             System.out.println("Media cadastrada com sucesso.");
         } catch (IOException e){
             System.out.println(e.getMessage());
@@ -200,11 +203,12 @@ public class AddMovieController implements Initializable {
         });
     }
     
-    public void setNewMovie(File filePath, MovieHandler mh, Communication cm) {
+    public void setNewMovie(File filePath, MovieHandler mh, Communication cm, TableView<MediaDomain> tb) {
         path.setText(filePath.getAbsolutePath().toString());
         communication = cm;
         file = filePath;
         movieHandler = mh;
+        tableView = tb;
         setDuration(filePath);
     }
     
