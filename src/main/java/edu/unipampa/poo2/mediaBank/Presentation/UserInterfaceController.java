@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalTime;
+import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -22,9 +23,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -33,54 +34,104 @@ public class UserInterfaceController implements Initializable {
     @FXML
     private Button addNewMediaButton;
     @FXML
-    private ChoiceBox<String> orderDropdown;
+    private Button searchByTitleButton;
     @FXML
-    private ChoiceBox<String> filterDropdown;
+    private TextField searchByTitleInput;
+    @FXML
+    private Button searchByGenreButton;
+    @FXML
+    private TextField searchByGenreInput;
     @FXML
     private TableView<MediaDomain> tableView;
 
     FileChooser fileChooser = new FileChooser();
 
-    private void loadDropdownData() {
-        if (orderDropdown != null) {
-            orderDropdown.getItems().add("A-Z");
-        orderDropdown.getItems().add("Mais recentes");
-        orderDropdown.getItems().add("Mais antigos");
-        orderDropdown.getSelectionModel().select(0);
+    @FXML
+    private void handleSearchByTitle(ActionEvent event) {
+        String inputText = searchByTitleInput.getText();
         
+        if (inputText == "") tableView.setItems(getMediaList());
+
+        try {
+            MovieHandler movieHandler = new MovieHandler();
+            List<MediaDomain> mediasFound = movieHandler.getMediasByFilter(inputText, "");
+            ObservableList<MediaDomain> mediasFoundObservableList = FXCollections.observableArrayList(mediasFound);
+            tableView.setItems(mediasFoundObservableList);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
+
+        searchByGenreInput.setText("");
+    }
+
+    @FXML
+    private void handleSearchByGenre(ActionEvent event) {
+        String inputText = searchByGenreInput.getText();
         
-        if (filterDropdown != null) {
-            filterDropdown.getItems().add("Gênero");
+        if (inputText == "") tableView.setItems(getMediaList());
+
+        try {
+            MovieHandler movieHandler = new MovieHandler();
+            List<MediaDomain> mediasFound = movieHandler.getMediasByFilter("", inputText);
+            ObservableList<MediaDomain> mediasFoundObservableList = FXCollections.observableArrayList(mediasFound);
+            tableView.setItems(mediasFoundObservableList);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
+
+        searchByTitleInput.setText("");
     }
 
     private void loadMediaTable() {
-        TableColumn<MediaDomain, String> titleColumn = new TableColumn<>("Título");
-        titleColumn.setMinWidth(200);
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        try {
+            TableColumn<MediaDomain, String> pathColumn = new TableColumn<>("Caminho");
+            pathColumn.setMinWidth(150);
+            pathColumn.setCellValueFactory(new PropertyValueFactory<>("pathFile"));
+    
+            TableColumn<MediaDomain, String> titleColumn = new TableColumn<>("Título");
+            titleColumn.setMinWidth(150);
+            titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+    
+            TableColumn<MediaDomain, String> descriptionColumn = new TableColumn<>("Descrição");
+            descriptionColumn.setMinWidth(150);
+            descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
 
-        TableColumn<MediaDomain, String> descriptionColumn = new TableColumn<>("Descrição");
-        descriptionColumn.setMinWidth(200);
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+            TableColumn<MediaDomain, String> genreColumn = new TableColumn<>("Gênero");
+            genreColumn.setMinWidth(150);
+            genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
+    
+            TableColumn<MediaDomain, String> languageColumn = new TableColumn<>("Idioma");
+            languageColumn.setMinWidth(150);
+            languageColumn.setCellValueFactory(new PropertyValueFactory<>("language"));
+    
+            TableColumn<MediaDomain, String> durationColumn = new TableColumn<>("Duração");
+            durationColumn.setMinWidth(150);
+            durationColumn.setCellValueFactory(new PropertyValueFactory<>("formattedDuration"));
 
-        TableColumn<MediaDomain, String> genreColumn = new TableColumn<>("Gênero");
-        genreColumn.setMinWidth(200);
-        genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
-
-        tableView.getColumns().addAll(titleColumn, descriptionColumn, genreColumn);
-        tableView.setItems(getMediaList());
+            TableColumn<MediaDomain, Calendar> dateColumn = new TableColumn<>("Data");
+            dateColumn.setMinWidth(150);
+            dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+    
+            tableView.getColumns().addAll(
+                pathColumn, titleColumn, descriptionColumn, genreColumn,
+                languageColumn, durationColumn, dateColumn
+            );
+    
+            tableView.setItems(getMediaList());   
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private ObservableList<MediaDomain> getMediaList() {
         try {
             MovieHandler movieHandler = new MovieHandler();
 
-            Movie movie1 = new Movie("Título do filme 1", "Descrição do filme 1", "1", "1", "1", LocalTime.now(), 2021, "C:/test");
+            Movie movie1 = new Movie("A - Título do filme 1", "A - Descrição do filme 1", "Ação", "Inglês", "1", LocalTime.now(), 2021, "C:/user/filme-1");
             movieHandler.createMedia(movie1);
-            Movie movie2 = new Movie("Título do filme 2", "Descrição do filme 2", "2", "2", "2", LocalTime.now(), 2021, "C:/test");
+            Movie movie2 = new Movie("B - Título do filme 2", "B - Descrição do filme 2", "Terror", "Português", "2", LocalTime.now(), 2021, "C:/user/filme-2");
             movieHandler.createMedia(movie2);
-            Movie movie3 = new Movie("Título do filme 3", "Descrição do filme 3", "3", "3", "3", LocalTime.now(), 3021, "C:/test");
+            Movie movie3 = new Movie("C - Título do filme 3", "C - Descrição do filme 3", "Aventura", "Francês", "3", LocalTime.now(), 3021, "C:/user/filme-3");
             movieHandler.createMedia(movie3);
 
             List<MediaDomain> mediaList = movieHandler.getMedias();
@@ -138,7 +189,6 @@ public class UserInterfaceController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        loadDropdownData();
         loadMediaTable();
     }
 }

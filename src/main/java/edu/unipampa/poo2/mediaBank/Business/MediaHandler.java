@@ -30,4 +30,13 @@ public abstract class MediaHandler {
     public void updateMedia(MediaDomain media) throws ClassNotFoundException, IOException {
         repository.update(media);
     }
+
+    public List<MediaDomain> getMediasByFilter(String title, String genre) throws ClassNotFoundException, IOException{
+        filter.setTitle(title);
+        filter.setGenre(genre);
+        
+        var mediaList = repository.queryList(filter);
+
+        return mediaList;
+    }
 }

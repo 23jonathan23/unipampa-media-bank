@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,13 +13,11 @@
          <children>
             <Label id="app-title" text="Banco de mídias" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="30.0" />
             <Button fx:id="addNewMediaButton" layoutX="40.0" layoutY="91.0" mnemonicParsing="false" onAction="#handleAddNewMedia" prefHeight="31.0" prefWidth="149.0" text="Cadastrar nova mídia" />
-            <Button layoutX="465.0" layoutY="91.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="87.0" text="Pesquisar" />
-            <TextField layoutX="229.0" layoutY="91.0" prefHeight="31.0" prefWidth="227.0" />
-            <ChoiceBox fx:id="filterDropdown" layoutX="667.0" layoutY="91.0" prefHeight="31.0" prefWidth="125.0" />
-            <Label id="filter-label" layoutX="590.0" layoutY="96.0" text="Filtrar por:" />
-            <ChoiceBox fx:id="orderDropdown" layoutX="913.0" layoutY="91.0" prefHeight="31.0" prefWidth="125.0" />
-            <Label id="order-label" layoutX="822.0" layoutY="96.0" text="Ordenar por:" />
+            <Button fx:id="searchByTitleButton" layoutX="467.0" layoutY="91.0" mnemonicParsing="false" onAction="#handleSearchByTitle" prefHeight="31.0" prefWidth="149.0" text="Pesquisar por título" />
+            <TextField fx:id="searchByTitleInput" layoutX="236.0" layoutY="91.0" prefHeight="31.0" prefWidth="222.0" />
             <TableView fx:id="tableView" layoutX="40.0" layoutY="156.0" prefHeight="410.0" prefWidth="1000.0" />
+            <Button fx:id="searchByGenreButton" layoutX="891.0" layoutY="91.0" mnemonicParsing="false" onAction="#handleSearchByGenre" prefHeight="31.0" prefWidth="149.0" text="Pesquisar por gênero" />
+            <TextField fx:id="searchByGenreInput" layoutX="660.0" layoutY="91.0" prefHeight="31.0" prefWidth="222.0" />
          </children>
     </AnchorPane>
   </children>
