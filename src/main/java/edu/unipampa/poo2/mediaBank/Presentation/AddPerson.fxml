@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="369.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.unipampa.poo2.mediaBank.Presentation.AddPersonController">
+   <children>
+      <AnchorPane prefHeight="389.0" prefWidth="600.0">
+         <children>
+            <TextField fx:id="novo" layoutX="76.0" layoutY="90.0" prefHeight="25.0" prefWidth="349.0" />
+            <Label fx:id="type" layoutX="22.0" layoutY="94.0" prefHeight="17.0" prefWidth="36.0" text="Ator" />
+            <Button fx:id="add" layoutX="467.0" layoutY="90.0" mnemonicParsing="false" onAction="#createPerson" text="Adiciona" />
+            <Label fx:id="message" layoutX="62.0" layoutY="30.0" text="Adicionar atores" />
+            <TableView fx:id="table" layoutX="76.0" layoutY="138.0" prefHeight="200.0" prefWidth="349.0" />
+            <Button fx:id="save" layoutX="473.0" layoutY="297.0" mnemonicParsing="false" onAction="#register" text="Salvar" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

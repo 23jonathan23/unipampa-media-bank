@@ -9,13 +9,9 @@ public class Song extends MediaPlayerDomain {
     private static final long serialVersionUID = 7884718496500956708L;
 
     public Song(String title, String description, String genre,
-        String language, List<String> authors, List<String> interpreters, 
-        LocalTime duration, int year, String pathFile) {
+        String language, LocalTime duration, int year, String pathFile) {
         
         super(title, description, pathFile, genre, language, duration, year);
-        
-        _authors = authors;
-        _interpreters = interpreters;
     }
 
 
